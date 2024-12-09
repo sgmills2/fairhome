@@ -1,0 +1,33 @@
+mkdir fairhome
+cd fairhome
+yarn init -y 
+mkdir packages
+mkdir packages/client
+mkdir packages/server
+mkdir packages/shared 
+mkdir -p packages/client/src/api
+echo. > packages/client/src/api/listings.ts
+cd packages/client
+yarn init -y
+yarn add @emotion/react @emotion/styled @mui/joy @supabase/supabase-js mapbox-gl react react-dom react-map-gl react-query react-router-dom
+yarn add -D @types/react @types/react-dom @vitejs/plugin-react typescript vite 
+yarn dev
+yarn install
+
+ls node_modules/@mui
+ls node_modules/react
+
+npm install -g yarn
+
+cd packages/shared
+yarn install
+yarn build
+
+cd ../client
+yarn install
+
+cd packages/server
+yarn install
+
+cd ../../  # Go back to root
+yarn install
