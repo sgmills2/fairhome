@@ -12,7 +12,7 @@ export async function syncChicagoData() {
       title: item.property_name,
       description: `${item.property_type} managed by ${item.management_company}`,
       address: item.address,
-      location: `POINT(${item.longitude} ${item.latitude})`,
+      location: `ST_GeomFromText('POINT(${item.longitude} ${item.latitude})', 4326)`,
       price: 0,
       bedrooms: 0,
       bathrooms: 0,
@@ -32,9 +32,13 @@ export async function syncChicagoData() {
       .from('listings')
       .insert(listings);
 
-    if (error) throw error;
+    if (error) {
+      console.error('Insert error:', error);
+      throw error;
+    }
     
-    return { success: true };
+    console.log(`Synced ${listings.length} listings`);
+    return { success: true, count: listings.length };
   } catch (error) {
     console.error('Sync error:', error);
     return { success: false, error };
