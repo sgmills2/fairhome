@@ -4,6 +4,7 @@ import type { MapRef } from 'react-map-gl';
 import { Box, Typography } from '@mui/joy';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import type { Listing } from '@fairhome/shared/src/types';
+import { config } from '../config';
 
 interface MapViewProps {
   listings?: Listing[];
@@ -28,7 +29,7 @@ function MapView({ listings = [], selectedListing, onListingClick }: MapViewProp
   return (
     <Map
       ref={mapRef}
-      mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
+      mapboxAccessToken={config.MAPBOX_TOKEN}
       initialViewState={{
         latitude: 41.8781,  // Chicago's coordinates
         longitude: -87.6298,
