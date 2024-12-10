@@ -1,4 +1,6 @@
+import { useEffect, useRef } from 'react';
 import Map, { Marker, Popup } from 'react-map-gl';
+import type { MapRef } from 'react-map-gl';
 import { Box, Typography } from '@mui/joy';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import type { Listing } from '@fairhome/shared/src/types';
@@ -10,8 +12,22 @@ interface MapViewProps {
 }
 
 function MapView({ listings = [], selectedListing, onListingClick }: MapViewProps) {
+  const mapRef = useRef<MapRef>(null);
+
+  useEffect(() => {
+    if (selectedListing && mapRef.current) {
+      mapRef.current.flyTo({
+        center: [selectedListing.longitude, selectedListing.latitude],
+        zoom: 15,
+        duration: 2000,
+        padding: { top: 50, bottom: 50, left: 50, right: 50 }
+      });
+    }
+  }, [selectedListing]);
+
   return (
     <Map
+      ref={mapRef}
       mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
       initialViewState={{
         latitude: 41.8781,  // Chicago's coordinates
