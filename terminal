@@ -25,9 +25,16 @@ yarn build
 
 cd ../client
 yarn install
+yarn add supabase --dev
+yarn supabase gen types typescript --project-id ypafrhayqpygdnuyhadk > src/lib/database.types.ts
 
 cd packages/server
 yarn install
 
 cd ../../  # Go back to root
 yarn install
+
+yarn add supabase --dev
+
+yarn workspace @fairhome/client add supabase --dev
+yarn workspace @fairhome/client supabase gen types typescript --project-id ypafrhayqpygdnuyhadk > packages/client/src/lib/database.types.ts

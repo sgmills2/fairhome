@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import Map, { Marker, Popup } from 'react-map-gl';
-import { Listing } from '@fairhome/shared/src/types';
-import 'mapbox-gl/dist/mapbox-gl.css';
 import { Box, Typography } from '@mui/joy';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import type { Listing } from '@fairhome/shared/src/types';
 
 interface MapViewProps {
   listings?: Listing[];
