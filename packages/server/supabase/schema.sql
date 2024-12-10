@@ -11,10 +11,10 @@ create table if not exists public.developers (
 
 create table if not exists public.listings (
   id uuid default gen_random_uuid() primary key,
-  developer_id uuid references public.developers(id),
+  developer_id uuid references public.developers(id) null,
   title text not null,
   description text,
-  address text not null,
+  address text not null unique,
   location geography(Point, 4326) not null,
   price numeric not null,
   bedrooms smallint not null,
@@ -32,15 +32,18 @@ alter table if exists public.listings enable row level security;
 
 -- Drop existing policies if they exist
 drop policy if exists "Listings are viewable by everyone" on public.listings;
-drop policy if exists "Developers can insert their own listings" on public.listings;
-drop policy if exists "Developers can update their own listings" on public.listings;
+drop policy if exists "Listings are insertable by everyone" on public.listings;
+drop policy if exists "Listings are updatable by everyone" on public.listings;
 
--- Create policies
-create policy "Listings are viewable by everyone" on public.listings
-  for select using (true);
+-- Create public access policies
+create policy "Listings are viewable by everyone" 
+  on public.listings for select
+  using (true);
 
-create policy "Developers can insert their own listings" on public.listings
-  for insert with check (auth.uid() = developer_id);
+create policy "Listings are insertable by everyone" 
+  on public.listings for insert
+  with check (true);
 
-create policy "Developers can update their own listings" on public.listings
-  for update using (auth.uid() = developer_id); 
+create policy "Listings are updatable by everyone" 
+  on public.listings for update
+  using (true); 
