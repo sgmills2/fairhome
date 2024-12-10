@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Map, { Marker, Popup } from 'react-map-gl';
 import { Box, Typography } from '@mui/joy';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -6,11 +5,11 @@ import type { Listing } from '@fairhome/shared/src/types';
 
 interface MapViewProps {
   listings?: Listing[];
+  selectedListing: Listing | null;
+  onListingClick: (listing: Listing | null) => void;
 }
 
-function MapView({ listings = [] }: MapViewProps) {
-  const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
-
+function MapView({ listings = [], selectedListing, onListingClick }: MapViewProps) {
   return (
     <Map
       mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
@@ -30,17 +29,19 @@ function MapView({ listings = [] }: MapViewProps) {
           anchor="bottom"
           onClick={e => {
             e.originalEvent.stopPropagation();
-            setSelectedListing(listing);
+            onListingClick(listing);
           }}
         >
           <div className="marker" style={{
-            backgroundColor: '#FF5A5F',
-            width: '24px',
-            height: '24px',
+            backgroundColor: listing.id === selectedListing?.id ? '#4CAF50' : '#FF5A5F',
+            width: listing.id === selectedListing?.id ? '32px' : '24px',
+            height: listing.id === selectedListing?.id ? '32px' : '24px',
             borderRadius: '50%',
             border: '2px solid white',
             cursor: 'pointer',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
+            boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+            transition: 'all 0.2s ease-in-out',
+            transform: listing.id === selectedListing?.id ? 'scale(1.1)' : 'scale(1)'
           }} />
         </Marker>
       ))}
@@ -49,7 +50,7 @@ function MapView({ listings = [] }: MapViewProps) {
         <Popup
           latitude={selectedListing.latitude}
           longitude={selectedListing.longitude}
-          onClose={() => setSelectedListing(null)}
+          onClose={() => onListingClick(null)}
           closeButton={true}
           closeOnClick={false}
           anchor="top"
