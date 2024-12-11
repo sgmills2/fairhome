@@ -102,7 +102,7 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
         zoom: 11
       }}
       onMove={handleMove}
-      style={{ width: '100%', height: '100%' }}
+      style={{ width: '100%', height: '100%', cursor: 'pointer' }}
       mapStyle="mapbox://styles/mapbox/streets-v11"
       interactiveLayerIds={['clusters', 'unclustered-point']}
       onClick={handleClick}
@@ -123,11 +123,13 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
             'circle-color': [
               'step',
               ['get', 'point_count'],
-              '#51bbd6',  // 0-9 points
+              '#74C2E1',  // 0-9 points (Light Blue)
               10,
-              '#f1f075',  // 10-49 points
+              '#74C2E1',  // 10-24 points (Light Blue)
+              25,
+              '#C3272B',  // 25-49 points (Red)
               50,
-              '#f28cb1'   // 50+ points
+              '#C3272B'   // 50+ points (Red)
             ],
             'circle-radius': [
               'step',
@@ -163,8 +165,8 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
             'circle-color': [
               'case',
               ['==', ['get', 'id'], selectedListing?.id || ''],
-              '#4CAF50',  // Selected color
-              '#FF5A5F'   // Default color
+              '#C3272B',  // Selected color (Red)
+              '#74C2E1'   // Default color (Light Blue)
             ],
             'circle-radius': [
               'case',
