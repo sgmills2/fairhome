@@ -3,10 +3,9 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # or your default branch name
-  workflow_dispatch:  # Allows manual trigger
+      - main
+  workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: write
   pages: write
@@ -15,13 +14,16 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    concurrency: ci-${{ github.ref }} # Ensure only one deployment runs at a time
+    concurrency: 
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
     
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Fetch all history for git info
+          fetch-depth: 0
+          persist-credentials: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -29,7 +31,6 @@ jobs:
           node-version: '18'
           cache: 'yarn'
 
-      # Cache dependencies
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
@@ -46,11 +47,11 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile  # Ensures consistent installs
+        run: yarn install --frozen-lockfile
 
       - name: Clean previous build
         run: yarn clean
-        continue-on-error: true  # Don't fail if no previous build exists
+        continue-on-error: true
 
       - name: Build
         run: yarn build:client
@@ -59,13 +60,25 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
+      - name: Copy CNAME
+        run: cp packages/client/public/CNAME packages/client/dist/
+
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: packages/client/dist
           branch: gh-pages
-          clean: true  # Automatically remove deleted files from the deployment branch
-          commit-message: "Deploy: ${{ github.event.head_commit.message }}"
+          clean: true
+          clean-exclude: |
+            .nojekyll
+            CNAME
+          commit-message: |
+            Deploy: ${{ github.event.head_commit.message }}
+            
+            Triggered by ${{ github.event_name }} from ${{ github.sha }}
+          git-config-name: GitHub Actions
+          git-config-email: github-actions[bot]@users.noreply.github.com
+          force: true
 
       - name: Update deployment status
         if: always()
