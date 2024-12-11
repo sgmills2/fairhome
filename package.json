@@ -1,5 +1,5 @@
 {
-  "name": "fairhome",
+  "name": "FairHome",
   "private": true,
   "packageManager": "yarn@1.22.22",
   "workspaces": [
@@ -8,7 +8,10 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "build:client": "cd packages/client && yarn build",
+    "predeploy": "yarn build:client",
+    "deploy": "xcopy /E /Y packages\\client\\dist\\* ."
   },
   "devDependencies": {
     "turbo": "latest",
