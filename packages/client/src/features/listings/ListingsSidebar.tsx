@@ -4,7 +4,7 @@ import Card from '@mui/joy/Card';
 import Typography from '@mui/joy/Typography';
 import { useEffect, useRef } from 'react';
 import type { Listing } from '@fairhome/shared/src/types';
-import { formatPrice, formatArea, formatBedBath, formatAddress } from '../utils/formatting';
+import { formatPrice, formatArea, formatBedBath, formatAddress } from '../../utils/formatting';
 
 interface ListingsSidebarProps {
   listings?: Listing[];

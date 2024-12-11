@@ -10,7 +10,7 @@
     "build": "turbo run build",
     "lint": "turbo run lint",
     "build:client": "cd packages/client && yarn build",
-    "clean": "rimraf packages/client/dist assets",
+    "clean": "rimraf packages/client/dist assets curl terminal index.html",
     "predeploy": "yarn clean && yarn build:client",
     "deploy": "gh-pages -d packages/client/dist"
   },

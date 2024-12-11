@@ -3,19 +3,12 @@ import Map, { Popup, Source, Layer, ViewStateChangeEvent } from 'react-map-gl';
 import type { MapRef } from 'react-map-gl';
 import type { FeatureCollection, Feature, Point } from 'geojson';
 import { Box, Typography } from '@mui/joy';
-import debounce from 'lodash/debounce';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import type { Listing } from '@fairhome/shared/src/types';
-import { config } from '../config';
-import { chicagoNeighborhoods } from '../data/chicago-neighborhoods';
-
-interface MapViewProps {
-  listings?: Listing[];
-  selectedListing: Listing | null;
-  onListingClick: (listing: Listing | null) => void;
-  onViewportChange?: (bounds: [[number, number], [number, number]], zoom: number) => void;
-  selectedNeighborhood?: string | null;
-}
+import { config } from '../../config';
+import { chicagoNeighborhoods } from '../../data/chicago-neighborhoods';
+import type { MapViewProps } from '../../types/map';
+import { formatPrice, formatBedBath, formatArea, formatAddress } from '../../utils/formatting';
 
 const MapView = forwardRef<MapRef, MapViewProps>(({ 
   listings = [], 
@@ -24,7 +17,6 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
   onViewportChange,
   selectedNeighborhood 
 }, ref) => {
-  // Track current zoom level
   const [zoom, setZoom] = useState(11);
 
   // Calculate cluster radius based on zoom
@@ -35,14 +27,6 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
     return 70;                      // Far
   }, [zoom]);
 
-  // Handle map movement with debounce
-  const debouncedViewportChange = useMemo(
-    () => debounce((bounds: [[number, number], [number, number]], zoom: number) => {
-      onViewportChange?.(bounds, zoom);
-    }, 100),
-    [onViewportChange]
-  );
-
   const handleMove = (evt: ViewStateChangeEvent) => {
     setZoom(evt.viewState.zoom);
     
@@ -52,7 +36,7 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
       
       const sw = bounds.getSouthWest();
       const ne = bounds.getNorthEast();
-      debouncedViewportChange(
+      onViewportChange(
         [[sw.lng, sw.lat], [ne.lng, ne.lat]],
         evt.viewState.zoom
       );
@@ -109,7 +93,6 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
         });
       });
     } else {
-      // Handle single listing click
       const listing = listings.find(l => l.id === feature.properties.id);
       if (listing) {
         onListingClick(listing);
@@ -158,7 +141,7 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
         type="geojson"
         data={geojsonListings}
         cluster={true}
-        clusterMaxZoom={16}
+        clusterMaxZoom={14}
         clusterRadius={clusterRadius}
       >
         <Layer
@@ -169,26 +152,28 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
             'circle-color': [
               'step',
               ['get', 'point_count'],
-              '#74C2E1',  // 0-9 points (Light Blue)
+              '#74C2E1',  // Chicago flag light blue
               10,
-              '#74C2E1',  // 10-24 points (Light Blue)
+              '#74C2E1',  // Chicago flag light blue
               25,
-              '#C3272B',  // 25-49 points (Red)
+              '#C3272B',  // Chicago flag red
               50,
-              '#C3272B'   // 50+ points (Red)
+              '#C3272B'   // Chicago flag red
             ],
             'circle-radius': [
               'step',
               ['get', 'point_count'],
-              20,         // 0-9 points
+              20,
               10,
-              30,        // 10-49 points
+              25,
+              25,
+              30,
               50,
-              40         // 50+ points
+              35
             ]
           }}
         />
-        
+
         <Layer
           id="cluster-count"
           type="symbol"
@@ -208,38 +193,44 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
           type="circle"
           filter={['!', ['has', 'point_count']]}
           paint={{
-            'circle-color': [
-              'case',
-              ['==', ['get', 'id'], selectedListing?.id || ''],
-              '#C3272B',  // Selected color (Red)
-              '#74C2E1'   // Default color (Light Blue)
-            ],
-            'circle-radius': [
-              'case',
-              ['==', ['get', 'id'], selectedListing?.id || ''],
-              12,         // Selected size
-              8          // Default size
-            ],
+            'circle-color': '#74C2E1',  // Chicago flag light blue
+            'circle-radius': 12,
             'circle-stroke-width': 2,
-            'circle-stroke-color': '#ffffff'
+            'circle-stroke-color': '#fff'
+          }}
+        />
+
+        <Layer
+          id="unclustered-point-count"
+          type="symbol"
+          filter={['!', ['has', 'point_count']]}
+          layout={{
+            'text-field': '$',
+            'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+            'text-size': 12
+          }}
+          paint={{
+            'text-color': '#ffffff'
           }}
         />
       </Source>
 
       {selectedListing && (
         <Popup
-          latitude={selectedListing.latitude}
           longitude={selectedListing.longitude}
+          latitude={selectedListing.latitude}
+          anchor="bottom"
           onClose={() => onListingClick(null)}
-          closeButton={true}
-          closeOnClick={false}
-          anchor="top"
         >
           <Box sx={{ p: 1 }}>
-            <Typography level="h4">{selectedListing.title}</Typography>
-            <Typography>{selectedListing.address}</Typography>
-            <Typography>
-              ${selectedListing.price.toLocaleString()} · {selectedListing.bedrooms} beds
+            <Typography level="title-lg">
+              {formatPrice(selectedListing.price)}
+            </Typography>
+            <Typography level="body-sm">
+              {formatBedBath(selectedListing.bedrooms, selectedListing.bathrooms)} • {formatArea(selectedListing.squareFeet)}
+            </Typography>
+            <Typography level="body-sm" noWrap>
+              {formatAddress(selectedListing.address)}
             </Typography>
           </Box>
         </Popup>
@@ -247,7 +238,5 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
     </Map>
   );
 });
-
-MapView.displayName = 'MapView';
 
 export default MapView; 

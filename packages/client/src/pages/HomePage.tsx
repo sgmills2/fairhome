@@ -1,25 +1,34 @@
 import Box from '@mui/joy/Box';
 import { useQuery } from 'react-query';
-import { useState, useMemo, useRef, useCallback } from 'react';
-import debounce from 'lodash/debounce';
-import Map from '../components/Map';
-import MapFilters from '../components/MapFilters';
-import SearchBar from '../components/SearchBar';
-import AlderpersonSearch from '../components/AlderpersonSearch';
-import ListingsSidebar from '../components/ListingsSidebar';
-import { fetchListings } from '../api/listings';
+import { useState, useMemo, useRef } from 'react';
+import { Map, MapFilters } from '../features/map';
+import { SearchBar, AlderpersonSearch } from '../features/search';
+import { ListingsSidebar } from '../features/listings';
+import { fetchListings } from '../services/listings';
 import type { Listing } from '@fairhome/shared/src/types';
 import type { MapRef } from 'react-map-gl';
+import { useMapViewport } from '../features/map/hooks/useMapViewport';
+import { useSearch } from '../features/search/hooks/useSearch';
 
 function HomePage() {
   const { data: listings = [], isLoading } = useQuery('listings', fetchListings);
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
-  const [selectedNeighborhood, setSelectedNeighborhood] = useState<string | null>(null);
-  const [selectedAlderperson, setSelectedAlderperson] = useState<string | null>(null);
   const mapRef = useRef<MapRef>(null);
   
-  // Viewport state
-  const [mapBounds, setMapBounds] = useState<[[number, number], [number, number]] | null>(null);
+  const {
+    mapBounds,
+    zoom,
+    clusterRadius,
+    handleViewportChange,
+    isInViewport
+  } = useMapViewport();
+
+  const {
+    selectedNeighborhood,
+    selectedAlderperson,
+    handleNeighborhoodSelect,
+    handleAlderpersonSelect
+  } = useSearch();
 
   // Calculate max values for filters
   const { maxPrice, maxSquareFootage } = useMemo(() => ({
@@ -33,61 +42,27 @@ function HomePage() {
   const [bedrooms, setBedrooms] = useState<number | null>(null);
   const [bathrooms, setBathrooms] = useState<number | null>(null);
 
-  // Handle viewport changes
-  const handleViewportChange = useCallback((bounds: [[number, number], [number, number]]) => {
-    setMapBounds(bounds);
-  }, []);
-
-  // Check if a listing is within the current viewport
-  const isInViewport = useCallback((listing: Listing) => {
-    if (!mapBounds) return true;
-    const [[swLng, swLat], [neLng, neLat]] = mapBounds;
-    return (
-      listing.longitude >= swLng &&
-      listing.longitude <= neLng &&
-      listing.latitude >= swLat &&
-      listing.latitude <= neLat
-    );
-  }, [mapBounds]);
-
-  // Debounced filter updates for sliders
-  const debouncedSetPriceRange = useCallback(
-    debounce((range: [number, number]) => setPriceRange(range), 100),
-    []
-  );
-
-  const debouncedSetSquareFootageRange = useCallback(
-    debounce((range: [number, number]) => setSquareFootageRange(range), 100),
-    []
-  );
-
   // Memoized filter function
-  const filterListings = useCallback((listings: Listing[]) => {
+  const filterListings = useMemo(() => {
     return listings.filter(listing => {
       const matchesPrice = listing.price >= priceRange[0] && listing.price <= priceRange[1];
       const matchesSquareFootage = listing.squareFeet >= squareFootageRange[0] && 
                                   listing.squareFeet <= squareFootageRange[1];
       const matchesBedrooms = bedrooms ? listing.bedrooms >= bedrooms : true;
       const matchesBathrooms = bathrooms ? listing.bathrooms >= bathrooms : true;
-      const matchesViewport = isInViewport(listing);
+      const matchesViewport = isInViewport(listing.latitude, listing.longitude);
 
       return matchesPrice && matchesSquareFootage && matchesBedrooms && matchesBathrooms && matchesViewport;
     });
-  }, [priceRange, squareFootageRange, bedrooms, bathrooms, isInViewport]);
+  }, [listings, priceRange, squareFootageRange, bedrooms, bathrooms, isInViewport]);
 
-  // Apply all filters with memoization
-  const filteredListings = useMemo(() => 
-    filterListings(listings),
-    [listings, filterListings]
-  );
-
-  const handleLocationSelect = useCallback((location: { latitude: number; longitude: number }) => {
+  const handleLocationSelect = (location: { latitude: number; longitude: number }) => {
     mapRef.current?.flyTo({
       center: [location.longitude, location.latitude],
       zoom: 14,
       duration: 2000
     });
-  }, []);
+  };
 
   return (
     <Box 
@@ -113,19 +88,19 @@ function HomePage() {
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
           <SearchBar 
             onLocationSelect={handleLocationSelect}
-            onNeighborhoodSelect={setSelectedNeighborhood}
+            onNeighborhoodSelect={(n) => handleNeighborhoodSelect(n, handleLocationSelect)}
             selectedNeighborhood={selectedNeighborhood}
           />
           <AlderpersonSearch
-            onAlderpersonSelect={setSelectedAlderperson}
+            onAlderpersonSelect={handleAlderpersonSelect}
             selectedAlderperson={selectedAlderperson}
           />
         </Box>
         <MapFilters
           priceRange={priceRange}
-          onPriceRangeChange={debouncedSetPriceRange}
+          onPriceRangeChange={setPriceRange}
           squareFootageRange={squareFootageRange}
-          onSquareFootageRangeChange={debouncedSetSquareFootageRange}
+          onSquareFootageRangeChange={setSquareFootageRange}
           bedrooms={bedrooms}
           onBedroomsChange={setBedrooms}
           bathrooms={bathrooms}
@@ -145,7 +120,7 @@ function HomePage() {
         }}
       >
         <ListingsSidebar 
-          listings={filteredListings} 
+          listings={filterListings} 
           isLoading={isLoading}
           selectedListing={selectedListing}
           onListingClick={setSelectedListing}
@@ -153,7 +128,7 @@ function HomePage() {
         <Box sx={{ flexGrow: 1, position: 'relative' }}>
           <Map 
             ref={mapRef}
-            listings={filteredListings}
+            listings={filterListings}
             selectedListing={selectedListing}
             onListingClick={setSelectedListing}
             onViewportChange={handleViewportChange}

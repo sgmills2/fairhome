@@ -1,7 +1,7 @@
 # FairHome Development Log
 
 ## Project Overview
-A web application to help Chicago residents find affordable housing, built with React, TypeScript, and Mapbox.
+A web application to help Chicago residents find affordable housing, built with React, TypeScript, and Mapbox. I typically use Windows on my Laptop and PC. Please default to Windows-based instructions & commands.
 
 ## Session History
 
