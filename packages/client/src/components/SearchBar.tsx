@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { Autocomplete, Input } from '@mui/joy';
+import { Autocomplete } from '@mui/joy';
 import type { Listing } from '@fairhome/shared/src/types';
 
 interface SearchBarProps {

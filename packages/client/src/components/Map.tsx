@@ -1,5 +1,5 @@
-import { useEffect, useRef, useMemo, useState, forwardRef } from 'react';
-import Map, { Marker, Popup, Source, Layer, ViewStateChangeEvent } from 'react-map-gl';
+import { useEffect, useMemo, useState, forwardRef } from 'react';
+import Map, { Popup, Source, Layer, ViewStateChangeEvent } from 'react-map-gl';
 import type { MapRef } from 'react-map-gl';
 import type { FeatureCollection, Feature, Point } from 'geojson';
 import { Box, Typography } from '@mui/joy';
