@@ -5,6 +5,7 @@ import debounce from 'lodash/debounce';
 import Map from '../components/Map';
 import MapFilters from '../components/MapFilters';
 import SearchBar from '../components/SearchBar';
+import AlderpersonSearch from '../components/AlderpersonSearch';
 import ListingsSidebar from '../components/ListingsSidebar';
 import { fetchListings } from '../api/listings';
 import type { Listing } from '@fairhome/shared/src/types';
@@ -14,6 +15,7 @@ function HomePage() {
   const { data: listings = [], isLoading } = useQuery('listings', fetchListings);
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
   const [selectedNeighborhood, setSelectedNeighborhood] = useState<string | null>(null);
+  const [selectedAlderperson, setSelectedAlderperson] = useState<string | null>(null);
   const mapRef = useRef<MapRef>(null);
   
   // Viewport state
@@ -107,12 +109,18 @@ function HomePage() {
           flexDirection: 'column'
         }}
       >
-        <SearchBar 
-          listings={listings}
-          onLocationSelect={handleLocationSelect}
-          onNeighborhoodSelect={setSelectedNeighborhood}
-          selectedNeighborhood={selectedNeighborhood}
-        />
+        {/* Search Bars Container */}
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+          <SearchBar 
+            onLocationSelect={handleLocationSelect}
+            onNeighborhoodSelect={setSelectedNeighborhood}
+            selectedNeighborhood={selectedNeighborhood}
+          />
+          <AlderpersonSearch
+            onAlderpersonSelect={setSelectedAlderperson}
+            selectedAlderperson={selectedAlderperson}
+          />
+        </Box>
         <MapFilters
           priceRange={priceRange}
           onPriceRangeChange={debouncedSetPriceRange}
