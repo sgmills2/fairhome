@@ -7,6 +7,11 @@
 - ✅ Listing details sidebar
 - ✅ Basic filters (price, bedrooms, bathrooms)
 - ✅ Responsive layout with footer
+- [x] Sync listings sidebar with map viewport
+  - [x] Filter list to show only visible properties
+  - [x] Update list order based on viewport position
+  - [x] Dynamic loading based on zoom level
+  - [x] Smooth transitions and animations
 
 ## Next Steps
 ### User Experience

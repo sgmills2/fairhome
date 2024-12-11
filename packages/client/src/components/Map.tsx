@@ -1,24 +1,28 @@
-import { useEffect, useMemo, useState, forwardRef } from 'react';
+import { useEffect, useMemo, useState, forwardRef, useCallback } from 'react';
 import Map, { Popup, Source, Layer, ViewStateChangeEvent } from 'react-map-gl';
 import type { MapRef } from 'react-map-gl';
 import type { FeatureCollection, Feature, Point } from 'geojson';
 import { Box, Typography } from '@mui/joy';
+import debounce from 'lodash/debounce';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import type { Listing } from '@fairhome/shared/src/types';
 import { config } from '../config';
+import { chicagoNeighborhoods } from '../data/chicago-neighborhoods';
 
 interface MapViewProps {
   listings?: Listing[];
   selectedListing: Listing | null;
   onListingClick: (listing: Listing | null) => void;
   onViewportChange?: (bounds: [[number, number], [number, number]], zoom: number) => void;
+  selectedNeighborhood?: string | null;
 }
 
 const MapView = forwardRef<MapRef, MapViewProps>(({ 
   listings = [], 
   selectedListing, 
   onListingClick,
-  onViewportChange 
+  onViewportChange,
+  selectedNeighborhood 
 }, ref) => {
   // Track current zoom level
   const [zoom, setZoom] = useState(11);
@@ -31,18 +35,24 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
     return 70;                      // Far
   }, [zoom]);
 
-  // Handle map movement
+  // Handle map movement with debounce
+  const debouncedViewportChange = useMemo(
+    () => debounce((bounds: [[number, number], [number, number]], zoom: number) => {
+      onViewportChange?.(bounds, zoom);
+    }, 100),
+    [onViewportChange]
+  );
+
   const handleMove = (evt: ViewStateChangeEvent) => {
     setZoom(evt.viewState.zoom);
     
-    // Get current map bounds
     if (ref && 'current' in ref && ref.current && onViewportChange) {
       const bounds = ref.current.getBounds();
       if (!bounds) return;
       
       const sw = bounds.getSouthWest();
       const ne = bounds.getNorthEast();
-      onViewportChange(
+      debouncedViewportChange(
         [[sw.lng, sw.lat], [ne.lng, ne.lat]],
         evt.viewState.zoom
       );
@@ -122,6 +132,27 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
       interactiveLayerIds={['clusters', 'unclustered-point']}
       onClick={handleClick}
     >
+      <Source id="neighborhoods" type="geojson" data={chicagoNeighborhoods}>
+        <Layer
+          id="neighborhood-fills"
+          type="fill"
+          paint={{
+            'fill-color': [
+              'case',
+              ['==', ['get', 'community'], selectedNeighborhood || ''],
+              'rgba(195, 39, 43, 0.2)',  // Chicago flag red with transparency
+              'rgba(0, 0, 0, 0)'  // transparent
+            ],
+            'fill-outline-color': [
+              'case',
+              ['==', ['get', 'community'], selectedNeighborhood || ''],
+              '#C3272B',  // Chicago flag red
+              'rgba(0, 0, 0, 0.1)'
+            ]
+          }}
+        />
+      </Source>
+
       <Source
         id="listings"
         type="geojson"

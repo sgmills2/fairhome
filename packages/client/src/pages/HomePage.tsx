@@ -13,6 +13,7 @@ import type { MapRef } from 'react-map-gl';
 function HomePage() {
   const { data: listings = [], isLoading } = useQuery('listings', fetchListings);
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
+  const [selectedNeighborhood, setSelectedNeighborhood] = useState<string | null>(null);
   const mapRef = useRef<MapRef>(null);
   
   // Viewport state
@@ -111,6 +112,8 @@ function HomePage() {
         <SearchBar 
           listings={listings}
           onLocationSelect={handleLocationSelect}
+          onNeighborhoodSelect={setSelectedNeighborhood}
+          selectedNeighborhood={selectedNeighborhood}
         />
         <MapFilters
           priceRange={priceRange}
@@ -148,6 +151,7 @@ function HomePage() {
             selectedListing={selectedListing}
             onListingClick={setSelectedListing}
             onViewportChange={handleViewportChange}
+            selectedNeighborhood={selectedNeighborhood}
           />
         </Box>
       </Box>

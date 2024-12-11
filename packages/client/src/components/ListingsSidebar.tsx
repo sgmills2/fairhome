@@ -56,7 +56,10 @@ function ListingsSidebar({
     >
       <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
         <Typography level="h4">
-          {listings.length} {listings.length === 1 ? 'Listing' : 'Listings'}
+          {listings.length} visible {listings.length === 1 ? 'listing' : 'listings'} in view
+        </Typography>
+        <Typography level="body-sm" color="neutral">
+          Showing listings visible on the map
         </Typography>
       </Box>
       
@@ -85,10 +88,22 @@ function ListingsSidebar({
             color={listing.id === selectedListing?.id ? "primary" : undefined}
             sx={{
               cursor: 'pointer',
-              transition: 'all 0.2s ease-in-out',
+              transition: 'all 0.3s ease-in-out',
+              opacity: 1,
+              animation: 'fadeIn 0.3s ease-in',
               '&:hover': {
                 transform: 'translateY(-2px)',
                 boxShadow: 'md',
+              },
+              '@keyframes fadeIn': {
+                from: {
+                  opacity: 0,
+                  transform: 'translateY(10px)'
+                },
+                to: {
+                  opacity: 1,
+                  transform: 'translateY(0)'
+                }
               }
             }}
           >
