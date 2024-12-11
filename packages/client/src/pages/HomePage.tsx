@@ -15,13 +15,7 @@ function HomePage() {
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
   const mapRef = useRef<MapRef>(null);
   
-  const {
-    mapBounds,
-    zoom,
-    clusterRadius,
-    handleViewportChange,
-    isInViewport
-  } = useMapViewport();
+  const { handleViewportChange, isInViewport } = useMapViewport();
 
   const {
     selectedNeighborhood,

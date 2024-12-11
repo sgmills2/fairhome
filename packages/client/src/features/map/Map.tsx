@@ -4,7 +4,6 @@ import type { MapRef } from 'react-map-gl';
 import type { FeatureCollection, Feature, Point } from 'geojson';
 import { Box, Typography } from '@mui/joy';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import type { Listing } from '@fairhome/shared/src/types';
 import { config } from '../../config';
 import { chicagoNeighborhoods } from '../../data/chicago-neighborhoods';
 import type { MapViewProps } from '../../types/map';
