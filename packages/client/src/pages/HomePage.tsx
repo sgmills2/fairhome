@@ -70,8 +70,8 @@ function HomePage() {
       sx={{ 
         display: 'flex', 
         flexDirection: 'column', 
-        height: 'calc(100vh - 64px)',
-        overflow: 'hidden' // Prevent any scrolling at the page level
+        height: 'calc(100vh - 108px)',
+        overflow: 'hidden'
       }}
     >
       {/* Search and Filters Container */}
