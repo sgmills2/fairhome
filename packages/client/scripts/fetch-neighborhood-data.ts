@@ -26,6 +26,12 @@ interface AldermanicInfo {
   alderman: string;
 }
 
+function toTitleCase(str: string): string {
+  return str.toLowerCase().split(' ').map(word => 
+    word.charAt(0).toUpperCase() + word.slice(1)
+  ).join(' ');
+}
+
 async function fetchData() {
   console.log('Fetching Chicago neighborhood data...');
   
@@ -56,8 +62,9 @@ async function fetchData() {
         ...feature,
         properties: {
           ...feature.properties,
+          community: toTitleCase(feature.properties.community),
           ward: aldermanicInfo?.ward || null,
-          alderman: aldermanicInfo?.alderman || null
+          alderman: aldermanicInfo?.alderman ? toTitleCase(aldermanicInfo.alderman) : null
         }
       };
     });
