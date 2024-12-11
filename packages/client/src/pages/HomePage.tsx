@@ -1,6 +1,6 @@
 import Box from '@mui/joy/Box';
 import { useQuery } from 'react-query';
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef, Suspense } from 'react';
 import { Map, MapFilters } from '../features/map';
 import { SearchBar, AlderpersonSearch } from '../features/search';
 import { ListingsSidebar } from '../features/listings';
@@ -9,6 +9,21 @@ import type { Listing } from '@fairhome/shared/src/types';
 import type { MapRef } from 'react-map-gl';
 import { useMapViewport } from '../features/map/hooks/useMapViewport';
 import { useSearch } from '../features/search/hooks/useSearch';
+import CircularProgress from '@mui/joy/CircularProgress';
+
+function ComponentLoader() {
+  return (
+    <Box sx={{ 
+      display: 'flex', 
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      height: '100%',
+      width: '100%'
+    }}>
+      <CircularProgress />
+    </Box>
+  );
+}
 
 function HomePage() {
   const { data: listings = [], isLoading } = useQuery('listings', fetchListings);
@@ -90,18 +105,20 @@ function HomePage() {
             selectedAlderperson={selectedAlderperson}
           />
         </Box>
-        <MapFilters
-          priceRange={priceRange}
-          onPriceRangeChange={setPriceRange}
-          squareFootageRange={squareFootageRange}
-          onSquareFootageRangeChange={setSquareFootageRange}
-          bedrooms={bedrooms}
-          onBedroomsChange={setBedrooms}
-          bathrooms={bathrooms}
-          onBathroomsChange={setBathrooms}
-          maxPrice={maxPrice}
-          maxSquareFootage={maxSquareFootage}
-        />
+        <Suspense fallback={<ComponentLoader />}>
+          <MapFilters
+            priceRange={priceRange}
+            onPriceRangeChange={setPriceRange}
+            squareFootageRange={squareFootageRange}
+            onSquareFootageRangeChange={setSquareFootageRange}
+            bedrooms={bedrooms}
+            onBedroomsChange={setBedrooms}
+            bathrooms={bathrooms}
+            onBathroomsChange={setBathrooms}
+            maxPrice={maxPrice}
+            maxSquareFootage={maxSquareFootage}
+          />
+        </Suspense>
       </Box>
 
       {/* Map and Sidebar Container */}
@@ -120,14 +137,16 @@ function HomePage() {
           onListingClick={setSelectedListing}
         />
         <Box sx={{ flexGrow: 1, position: 'relative' }}>
-          <Map 
-            ref={mapRef}
-            listings={filterListings}
-            selectedListing={selectedListing}
-            onListingClick={setSelectedListing}
-            onViewportChange={handleViewportChange}
-            selectedNeighborhood={selectedNeighborhood}
-          />
+          <Suspense fallback={<ComponentLoader />}>
+            <Map 
+              ref={mapRef}
+              listings={filterListings}
+              selectedListing={selectedListing}
+              onListingClick={setSelectedListing}
+              onViewportChange={handleViewportChange}
+              selectedNeighborhood={selectedNeighborhood}
+            />
+          </Suspense>
         </Box>
       </Box>
     </Box>

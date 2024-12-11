@@ -1,2 +1,4 @@
-export { default as Map } from './Map';
-export { default as MapFilters } from './MapFilters'; 
+import { lazy } from 'react';
+
+export const Map = lazy(() => import('./Map'));
+export const MapFilters = lazy(() => import('./MapFilters')); 
