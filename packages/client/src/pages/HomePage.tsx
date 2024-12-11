@@ -15,6 +15,10 @@ function HomePage() {
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
   const mapRef = useRef<MapRef>(null);
   
+  // Viewport state
+  const [mapBounds, setMapBounds] = useState<[[number, number], [number, number]] | null>(null);
+  const [mapZoom, setMapZoom] = useState<number>(11);
+  
   // Calculate max values for filters
   const { maxPrice, maxSquareFootage } = useMemo(() => ({
     maxPrice: Math.max(...listings.map(l => l.price), 5000),
@@ -26,6 +30,24 @@ function HomePage() {
   const [squareFootageRange, setSquareFootageRange] = useState<[number, number]>([0, maxSquareFootage]);
   const [bedrooms, setBedrooms] = useState<number | null>(null);
   const [bathrooms, setBathrooms] = useState<number | null>(null);
+
+  // Handle viewport changes
+  const handleViewportChange = useCallback((bounds: [[number, number], [number, number]], zoom: number) => {
+    setMapBounds(bounds);
+    setMapZoom(zoom);
+  }, []);
+
+  // Check if a listing is within the current viewport
+  const isInViewport = useCallback((listing: Listing) => {
+    if (!mapBounds) return true;
+    const [[swLng, swLat], [neLng, neLat]] = mapBounds;
+    return (
+      listing.longitude >= swLng &&
+      listing.longitude <= neLng &&
+      listing.latitude >= swLat &&
+      listing.latitude <= neLat
+    );
+  }, [mapBounds]);
 
   // Debounced filter updates for sliders
   const debouncedSetPriceRange = useCallback(
@@ -46,10 +68,11 @@ function HomePage() {
                                   listing.squareFeet <= squareFootageRange[1];
       const matchesBedrooms = bedrooms ? listing.bedrooms >= bedrooms : true;
       const matchesBathrooms = bathrooms ? listing.bathrooms >= bathrooms : true;
+      const matchesViewport = isInViewport(listing);
 
-      return matchesPrice && matchesSquareFootage && matchesBedrooms && matchesBathrooms;
+      return matchesPrice && matchesSquareFootage && matchesBedrooms && matchesBathrooms && matchesViewport;
     });
-  }, [priceRange, squareFootageRange, bedrooms, bathrooms]);
+  }, [priceRange, squareFootageRange, bedrooms, bathrooms, isInViewport]);
 
   // Apply all filters with memoization
   const filteredListings = useMemo(() => 
@@ -108,8 +131,8 @@ function HomePage() {
         sx={{ 
           display: 'flex', 
           flex: 1,
-          minHeight: 0, // Critical for proper flexbox behavior
-          position: 'relative' // Establish positioning context
+          minHeight: 0,
+          position: 'relative'
         }}
       >
         <ListingsSidebar 
@@ -124,6 +147,7 @@ function HomePage() {
             listings={filteredListings}
             selectedListing={selectedListing}
             onListingClick={setSelectedListing}
+            onViewportChange={handleViewportChange}
           />
         </Box>
       </Box>

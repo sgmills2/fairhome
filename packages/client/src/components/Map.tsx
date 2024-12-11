@@ -11,12 +11,14 @@ interface MapViewProps {
   listings?: Listing[];
   selectedListing: Listing | null;
   onListingClick: (listing: Listing | null) => void;
+  onViewportChange?: (bounds: [[number, number], [number, number]], zoom: number) => void;
 }
 
 const MapView = forwardRef<MapRef, MapViewProps>(({ 
   listings = [], 
   selectedListing, 
-  onListingClick 
+  onListingClick,
+  onViewportChange 
 }, ref) => {
   // Track current zoom level
   const [zoom, setZoom] = useState(11);
@@ -32,6 +34,19 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
   // Handle map movement
   const handleMove = (evt: ViewStateChangeEvent) => {
     setZoom(evt.viewState.zoom);
+    
+    // Get current map bounds
+    if (ref && 'current' in ref && ref.current && onViewportChange) {
+      const bounds = ref.current.getBounds();
+      if (!bounds) return;
+      
+      const sw = bounds.getSouthWest();
+      const ne = bounds.getNorthEast();
+      onViewportChange(
+        [[sw.lng, sw.lat], [ne.lng, ne.lat]],
+        evt.viewState.zoom
+      );
+    }
   };
 
   // Convert listings to GeoJSON for clustering
