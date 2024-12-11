@@ -18,8 +18,7 @@ function HomePage() {
   
   // Viewport state
   const [mapBounds, setMapBounds] = useState<[[number, number], [number, number]] | null>(null);
-  const [mapZoom, setMapZoom] = useState<number>(11);
-  
+
   // Calculate max values for filters
   const { maxPrice, maxSquareFootage } = useMemo(() => ({
     maxPrice: Math.max(...listings.map(l => l.price), 5000),
@@ -33,9 +32,8 @@ function HomePage() {
   const [bathrooms, setBathrooms] = useState<number | null>(null);
 
   // Handle viewport changes
-  const handleViewportChange = useCallback((bounds: [[number, number], [number, number]], zoom: number) => {
+  const handleViewportChange = useCallback((bounds: [[number, number], [number, number]]) => {
     setMapBounds(bounds);
-    setMapZoom(zoom);
   }, []);
 
   // Check if a listing is within the current viewport

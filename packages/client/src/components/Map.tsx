@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, forwardRef, useCallback } from 'react';
+import { useEffect, useMemo, useState, forwardRef } from 'react';
 import Map, { Popup, Source, Layer, ViewStateChangeEvent } from 'react-map-gl';
 import type { MapRef } from 'react-map-gl';
 import type { FeatureCollection, Feature, Point } from 'geojson';
