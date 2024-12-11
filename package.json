@@ -1,6 +1,7 @@
 {
   "name": "fairhome",
   "private": true,
+  "packageManager": "yarn@1.22.22",
   "workspaces": [
     "packages/*"
   ],
@@ -10,7 +11,7 @@
     "lint": "turbo run lint"
   },
   "devDependencies": {
-    "turbo": "^1.12.4",
+    "turbo": "latest",
     "typescript": "^5.3.3"
   }
 }
