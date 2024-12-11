@@ -1,8 +1,8 @@
-import { useEffect, useRef, useMemo } from 'react';
+import { useEffect, useRef, useMemo, forwardRef } from 'react';
 import Map, { Marker, Popup, Source, Layer } from 'react-map-gl';
 import type { MapRef } from 'react-map-gl';
 import type { FeatureCollection, Feature, Point } from 'geojson';
-import { Box, Typography, Badge } from '@mui/joy';
+import { Box, Typography } from '@mui/joy';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import type { Listing } from '@fairhome/shared/src/types';
 import { config } from '../config';
@@ -13,15 +13,11 @@ interface MapViewProps {
   onListingClick: (listing: Listing | null) => void;
 }
 
-interface ClusterProperties {
-  cluster?: boolean;
-  cluster_id?: number;
-  point_count?: number;
-}
-
-function MapView({ listings = [], selectedListing, onListingClick }: MapViewProps) {
-  const mapRef = useRef<MapRef>(null);
-
+const MapView = forwardRef<MapRef, MapViewProps>(({ 
+  listings = [], 
+  selectedListing, 
+  onListingClick 
+}, ref) => {
   // Convert listings to GeoJSON for clustering
   const geojsonListings: FeatureCollection<Point> = useMemo(() => ({
     type: 'FeatureCollection',
@@ -41,32 +37,31 @@ function MapView({ listings = [], selectedListing, onListingClick }: MapViewProp
   }), [listings]);
 
   useEffect(() => {
-    if (selectedListing && mapRef.current) {
-      mapRef.current.flyTo({
+    if (selectedListing && ref && 'current' in ref && ref.current) {
+      ref.current.flyTo({
         center: [selectedListing.longitude, selectedListing.latitude],
         zoom: 15,
         duration: 2000,
         padding: { top: 50, bottom: 50, left: 50, right: 50 }
       });
     }
-  }, [selectedListing]);
+  }, [selectedListing, ref]);
 
   const handleClick = (event: any) => {
     const features = event.features;
     if (!features || features.length === 0) return;
 
     const feature = features[0];
-    const properties = feature.properties as ClusterProperties;
+    const properties = feature.properties;
 
     if (properties.cluster) {
       const clusterId = properties.cluster_id;
-      const source = mapRef.current?.getSource('listings');
+      const source = (ref as any)?.current?.getSource('listings');
 
-      // Need to cast source to any because the type definitions are incomplete
-      (source as any)?.getClusterExpansionZoom(clusterId, (err: any, zoom: number) => {
+      source?.getClusterExpansionZoom(clusterId, (err: any, zoom: number) => {
         if (err) return;
 
-        mapRef.current?.flyTo({
+        (ref as any)?.current?.flyTo({
           center: feature.geometry.coordinates as [number, number],
           zoom,
           duration: 500
@@ -83,7 +78,7 @@ function MapView({ listings = [], selectedListing, onListingClick }: MapViewProp
 
   return (
     <Map
-      ref={mapRef}
+      ref={ref}
       mapboxAccessToken={config.MAPBOX_TOKEN}
       initialViewState={{
         latitude: 41.8781,  // Chicago's coordinates
@@ -103,7 +98,6 @@ function MapView({ listings = [], selectedListing, onListingClick }: MapViewProp
         clusterMaxZoom={14}
         clusterRadius={50}
       >
-        {/* Clustered points */}
         <Layer
           id="clusters"
           type="circle"
@@ -130,7 +124,6 @@ function MapView({ listings = [], selectedListing, onListingClick }: MapViewProp
           }}
         />
         
-        {/* Cluster count */}
         <Layer
           id="cluster-count"
           type="symbol"
@@ -145,7 +138,6 @@ function MapView({ listings = [], selectedListing, onListingClick }: MapViewProp
           }}
         />
 
-        {/* Individual points */}
         <Layer
           id="unclustered-point"
           type="circle"
@@ -189,6 +181,8 @@ function MapView({ listings = [], selectedListing, onListingClick }: MapViewProp
       )}
     </Map>
   );
-}
+});
+
+MapView.displayName = 'MapView';
 
 export default MapView; 
