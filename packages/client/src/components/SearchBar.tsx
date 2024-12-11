@@ -1,6 +1,6 @@
 import { Autocomplete } from '@mui/joy';
 import type { Listing } from '@fairhome/shared/src/types';
-import { chicagoNeighborhoods, findNeighborhood } from '../data/chicago-neighborhoods';
+import { chicagoNeighborhoods, findNeighborhood, getNeighborhoodCenter } from '../data/chicago-neighborhoods';
 
 interface SearchBarProps {
   listings: Listing[];
@@ -30,13 +30,7 @@ function SearchBar({
     if (value) {
       const neighborhood = findNeighborhood(value.neighborhood);
       if (neighborhood) {
-        // Calculate center of neighborhood polygon
-        const coords = neighborhood.geometry.coordinates[0];
-        const lats = coords.map(c => c[1]);
-        const lngs = coords.map(c => c[0]);
-        const centerLat = (Math.min(...lats) + Math.max(...lats)) / 2;
-        const centerLng = (Math.min(...lngs) + Math.max(...lngs)) / 2;
-
+        const [centerLng, centerLat] = getNeighborhoodCenter(neighborhood);
         onLocationSelect({
           latitude: centerLat,
           longitude: centerLng
