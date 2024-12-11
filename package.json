@@ -12,12 +12,12 @@
     "build:client": "cd packages/client && yarn build",
     "clean": "rimraf packages/client/dist assets curl terminal index.html",
     "predeploy": "yarn clean && yarn build:client",
-    "deploy": "gh-pages -d packages/client/dist"
+    "deploy": "node node_modules/gh-pages/bin/gh-pages.js -d packages/client/dist"
   },
   "devDependencies": {
-    "turbo": "^2.3.3",
-    "typescript": "^5.3.3",
+    "gh-pages": "^6.2.0",
     "rimraf": "^5.0.5",
-    "gh-pages": "^6.1.0"
+    "turbo": "^2.3.3",
+    "typescript": "^5.3.3"
   }
 }
