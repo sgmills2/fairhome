@@ -15,7 +15,7 @@ function HomePage() {
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
   const mapRef = useRef<MapRef>(null);
   
-  // Calculate max values for filters - memoized and only updates when listings change
+  // Calculate max values for filters
   const { maxPrice, maxSquareFootage } = useMemo(() => ({
     maxPrice: Math.max(...listings.map(l => l.price), 5000),
     maxSquareFootage: Math.max(...listings.map(l => l.squareFeet), 1000)
@@ -66,15 +66,25 @@ function HomePage() {
   }, []);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 64px)' }}>
-      <Box sx={{ 
-        p: 2, 
-        borderBottom: '1px solid', 
-        borderColor: 'divider',
-        display: 'flex',
-        gap: 2,
-        flexDirection: 'column'
-      }}>
+    <Box 
+      sx={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        height: 'calc(100vh - 64px)',
+        overflow: 'hidden' // Prevent any scrolling at the page level
+      }}
+    >
+      {/* Search and Filters Container */}
+      <Box 
+        sx={{ 
+          p: 2, 
+          borderBottom: '1px solid', 
+          borderColor: 'divider',
+          display: 'flex',
+          gap: 2,
+          flexDirection: 'column'
+        }}
+      >
         <SearchBar 
           listings={listings}
           onLocationSelect={handleLocationSelect}
@@ -92,14 +102,23 @@ function HomePage() {
           maxSquareFootage={maxSquareFootage}
         />
       </Box>
-      <Box sx={{ display: 'flex', flexGrow: 1 }}>
+
+      {/* Map and Sidebar Container */}
+      <Box 
+        sx={{ 
+          display: 'flex', 
+          flex: 1,
+          minHeight: 0, // Critical for proper flexbox behavior
+          position: 'relative' // Establish positioning context
+        }}
+      >
         <ListingsSidebar 
           listings={filteredListings} 
           isLoading={isLoading}
           selectedListing={selectedListing}
           onListingClick={setSelectedListing}
         />
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1, position: 'relative' }}>
           <Map 
             ref={mapRef}
             listings={filteredListings}

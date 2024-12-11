@@ -1,5 +1,5 @@
-import { useEffect, useRef, useMemo, forwardRef } from 'react';
-import Map, { Marker, Popup, Source, Layer } from 'react-map-gl';
+import { useEffect, useRef, useMemo, useState, forwardRef } from 'react';
+import Map, { Marker, Popup, Source, Layer, ViewStateChangeEvent } from 'react-map-gl';
 import type { MapRef } from 'react-map-gl';
 import type { FeatureCollection, Feature, Point } from 'geojson';
 import { Box, Typography } from '@mui/joy';
@@ -18,6 +18,22 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
   selectedListing, 
   onListingClick 
 }, ref) => {
+  // Track current zoom level
+  const [zoom, setZoom] = useState(11);
+
+  // Calculate cluster radius based on zoom
+  const clusterRadius = useMemo(() => {
+    if (zoom >= 16) return 30;      // Very close
+    if (zoom >= 14) return 40;      // Close
+    if (zoom >= 12) return 50;      // Medium
+    return 70;                      // Far
+  }, [zoom]);
+
+  // Handle map movement
+  const handleMove = (evt: ViewStateChangeEvent) => {
+    setZoom(evt.viewState.zoom);
+  };
+
   // Convert listings to GeoJSON for clustering
   const geojsonListings: FeatureCollection<Point> = useMemo(() => ({
     type: 'FeatureCollection',
@@ -85,6 +101,7 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
         longitude: -87.6298,
         zoom: 11
       }}
+      onMove={handleMove}
       style={{ width: '100%', height: '100%' }}
       mapStyle="mapbox://styles/mapbox/streets-v11"
       interactiveLayerIds={['clusters', 'unclustered-point']}
@@ -95,8 +112,8 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
         type="geojson"
         data={geojsonListings}
         cluster={true}
-        clusterMaxZoom={14}
-        clusterRadius={50}
+        clusterMaxZoom={16}
+        clusterRadius={clusterRadius}
       >
         <Layer
           id="clusters"

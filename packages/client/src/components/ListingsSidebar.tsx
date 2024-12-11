@@ -1,5 +1,7 @@
 import Box from '@mui/joy/Box';
 import CircularProgress from '@mui/joy/CircularProgress';
+import Card from '@mui/joy/Card';
+import Typography from '@mui/joy/Typography';
 import { useEffect, useRef } from 'react';
 import { Listing } from '@fairhome/shared/src/types';
 
@@ -11,7 +13,7 @@ interface ListingsSidebarProps {
 }
 
 function ListingsSidebar({ 
-  listings, 
+  listings = [], 
   isLoading, 
   selectedListing,
   onListingClick 
@@ -29,7 +31,13 @@ function ListingsSidebar({
 
   if (isLoading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
+      <Box sx={{ 
+        width: 360,
+        height: '100%',
+        display: 'flex', 
+        justifyContent: 'center', 
+        p: 2 
+      }}>
         <CircularProgress />
       </Box>
     );
@@ -39,32 +47,68 @@ function ListingsSidebar({
     <Box 
       sx={{ 
         width: 360, 
+        height: '100%',
         borderRight: '1px solid', 
         borderColor: 'divider',
-        overflowY: 'auto'
+        display: 'flex',
+        flexDirection: 'column'
       }}
     >
-      {listings?.map(listing => (
-        <Box
-          key={listing.id}
-          ref={listing.id === selectedListing?.id ? selectedRef : null}
-          onClick={() => onListingClick(listing)}
-          sx={{
-            p: 2,
-            mb: 1,
-            cursor: 'pointer',
-            backgroundColor: listing.id === selectedListing?.id ? 'action.selected' : 'transparent',
-            '&:hover': {
-              backgroundColor: 'action.hover'
-            },
-            transition: 'background-color 0.2s'
-          }}
-        >
-          <Box sx={{ fontWeight: 'bold' }}>{listing.title}</Box>
-          <Box sx={{ fontSize: 'sm', color: 'text.secondary' }}>{listing.address}</Box>
-          <Box sx={{ fontSize: 'sm', mt: 1 }}>{listing.description}</Box>
-        </Box>
-      ))}
+      <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+        <Typography level="h4">
+          {listings.length} {listings.length === 1 ? 'Listing' : 'Listings'}
+        </Typography>
+      </Box>
+      
+      <Box sx={{ 
+        overflowY: 'auto',
+        flex: 1,
+        p: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        // Hide scrollbar for WebKit browsers
+        '&::-webkit-scrollbar': {
+          display: 'none'
+        },
+        // Hide scrollbar for Firefox
+        scrollbarWidth: 'none',
+        // Hide scrollbar for IE/Edge
+        '-ms-overflow-style': 'none'
+      }}>
+        {listings.map(listing => (
+          <Card
+            key={listing.id}
+            ref={listing.id === selectedListing?.id ? selectedRef : null}
+            onClick={() => onListingClick(listing)}
+            variant={listing.id === selectedListing?.id ? "solid" : "soft"}
+            color={listing.id === selectedListing?.id ? "primary" : undefined}
+            sx={{
+              cursor: 'pointer',
+              transition: 'all 0.2s ease-in-out',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: 'md',
+              }
+            }}
+          >
+            <Typography level="title-lg">
+              ${listing.price.toLocaleString()}
+            </Typography>
+            <Typography level="body-sm">
+              {listing.bedrooms} bed • {listing.bathrooms} bath • {listing.squareFeet.toLocaleString()} sq ft
+            </Typography>
+            <Typography level="body-sm" color="neutral">
+              {listing.address}
+            </Typography>
+            {listing.description && (
+              <Typography level="body-sm" noWrap>
+                {listing.description}
+              </Typography>
+            )}
+          </Card>
+        ))}
+      </Box>
     </Box>
   );
 }
