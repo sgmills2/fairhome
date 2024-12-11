@@ -4,12 +4,20 @@
     "dev": {
       "cache": false,
       "persistent": true,
-      "env": ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "PORT"]
+      "env": [
+        "SUPABASE_URL",
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "PORT"
+      ]
     },
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**"
+      ]
     },
     "lint": {}
   }
-} 
+}
