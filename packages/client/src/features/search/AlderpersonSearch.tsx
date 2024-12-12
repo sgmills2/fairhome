@@ -26,7 +26,7 @@ function AlderpersonSearch({
 
   return (
     <Autocomplete
-      placeholder="Search by Alderperson"
+      placeholder="Search by Alder"
       options={PLACEHOLDER_ALDERPERSONS}
       value={selectedOption}
       sx={{ width: 300 }}

@@ -42,7 +42,7 @@ function SearchBar({
 
   return (
     <Autocomplete
-      placeholder="Search by neighborhood"
+      placeholder="Search by Neighborhood"
       options={searchOptions}
       value={selectedOption}
       sx={{ width: 300 }}

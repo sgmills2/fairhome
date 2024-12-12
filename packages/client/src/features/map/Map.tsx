@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, forwardRef } from 'react';
 import Map, { Popup, Source, Layer, ViewStateChangeEvent } from 'react-map-gl';
 import type { MapRef } from 'react-map-gl';
 import type { FeatureCollection, Feature, Point } from 'geojson';
-import { Box, Typography } from '@mui/joy';
+import { Box, Typography, Card } from '@mui/joy';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { config } from '../../config';
 import { chicagoNeighborhoods } from '../../data/chicago-neighborhoods';
@@ -115,6 +115,7 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
       onClick={handleClick}
       dragRotate={false}
       cursor="pointer"
+      attributionControl={false}
     >
       <Source id="neighborhoods" type="geojson" data={chicagoNeighborhoods}>
         <Layer
@@ -208,18 +209,29 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
           latitude={selectedListing.latitude}
           anchor="bottom"
           onClose={() => onListingClick(null)}
+          closeButton={false}
+          className="mapboxgl-popup-no-shadow"
         >
-          <Box sx={{ p: 1 }}>
-            <Typography level="title-lg">
+          <Card
+            variant="outlined"
+            sx={{
+              p: 1.5,
+              boxShadow: 'md',
+              minWidth: 200,
+              bgcolor: 'background.surface',
+              '--Card-radius': '8px'
+            }}
+          >
+            <Typography level="title-lg" sx={{ color: '#74C2E1' }}>
               {formatPrice(selectedListing.price)}
             </Typography>
             <Typography level="body-sm">
               {formatBedBath(selectedListing.bedrooms, selectedListing.bathrooms)} • {formatArea(selectedListing.squareFeet)}
             </Typography>
-            <Typography level="body-sm" noWrap>
+            <Typography level="body-sm" color="neutral">
               {formatAddress(selectedListing.address)}
             </Typography>
-          </Box>
+          </Card>
         </Popup>
       )}
     </Map>

@@ -12,4 +12,22 @@
 
 body {
   min-height: 100vh;
+}
+
+/* Mapbox popup customization */
+.mapboxgl-popup-content {
+  padding: 0 !important;
+  border-radius: 8px !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.mapboxgl-popup-tip {
+  border-top-color: #fff !important;
+}
+
+/* Hide Mapbox controls */
+.mapboxgl-control-container {
+  display: none !important;
 } 
