@@ -60,6 +60,11 @@ jobs:
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
         run: yarn build:client
 
+      - name: Ensure build directory exists
+        run: |
+          mkdir -p packages/client/dist
+          touch packages/client/dist/.nojekyll
+
       - name: Copy CNAME
         run: cp packages/client/public/CNAME packages/client/dist/
 
