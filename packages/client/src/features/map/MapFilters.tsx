@@ -59,6 +59,17 @@ function MapFilters({
           step={100}
           valueLabelDisplay="auto"
           valueLabelFormat={value => `$${value.toLocaleString()}`}
+          slotProps={{
+            track: {
+              style: { backgroundColor: '#74C2E1' }
+            },
+            thumb: {
+              style: { backgroundColor: '#74C2E1' }
+            },
+            valueLabel: {
+              style: { backgroundColor: '#74C2E1' }
+            }
+          }}
         />
       </Box>
 
@@ -75,6 +86,17 @@ function MapFilters({
           step={100}
           valueLabelDisplay="auto"
           valueLabelFormat={value => `${value} sq ft`}
+          slotProps={{
+            track: {
+              style: { backgroundColor: '#74C2E1' }
+            },
+            thumb: {
+              style: { backgroundColor: '#74C2E1' }
+            },
+            valueLabel: {
+              style: { backgroundColor: '#74C2E1' }
+            }
+          }}
         />
       </Box>
 

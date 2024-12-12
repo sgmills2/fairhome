@@ -109,10 +109,12 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
         zoom: 11
       }}
       onMove={handleMove}
-      style={{ width: '100%', height: '100%', cursor: 'pointer' }}
+      style={{ width: '100%', height: '100%' }}
       mapStyle="mapbox://styles/mapbox/streets-v11"
       interactiveLayerIds={['clusters', 'unclustered-point']}
       onClick={handleClick}
+      dragRotate={false}
+      cursor="pointer"
     >
       <Source id="neighborhoods" type="geojson" data={chicagoNeighborhoods}>
         <Layer
