@@ -1,6 +1,6 @@
 import { CssVarsProvider } from '@mui/joy/styles';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import Layout from './components/Layout';
 import Routes from './Routes';
 
@@ -10,11 +10,11 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <CssVarsProvider>
-        <BrowserRouter>
+        <HashRouter>
           <Layout>
             <Routes />
           </Layout>
-        </BrowserRouter>
+        </HashRouter>
       </CssVarsProvider>
     </QueryClientProvider>
   );
