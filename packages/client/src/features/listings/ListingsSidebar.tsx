@@ -81,12 +81,15 @@ function ListingsSidebar({
             ref={listing.id === selectedListing?.id ? selectedRef : null}
             onClick={() => onListingClick(listing)}
             variant={listing.id === selectedListing?.id ? "solid" : "soft"}
-            color={listing.id === selectedListing?.id ? "primary" : undefined}
             sx={{
               cursor: 'pointer',
               transition: 'all 0.3s ease-in-out',
               opacity: 1,
               animation: 'fadeIn 0.3s ease-in',
+              ...(listing.id === selectedListing?.id && {
+                bgcolor: '#74C2E1',
+                color: 'white'
+              }),
               '&:hover': {
                 transform: 'translateY(-2px)',
                 boxShadow: 'md',
@@ -109,11 +112,11 @@ function ListingsSidebar({
             <Typography level="body-sm">
               {formatBedBath(listing.bedrooms, listing.bathrooms)} • {formatArea(listing.squareFeet)}
             </Typography>
-            <Typography level="body-sm" color="neutral">
+            <Typography level="body-sm" color={listing.id === selectedListing?.id ? 'neutral' : 'neutral'}>
               {formatAddress(listing.address)}
             </Typography>
             {listing.description && (
-              <Typography level="body-sm" noWrap>
+              <Typography level="body-sm" noWrap color={listing.id === selectedListing?.id ? 'neutral' : 'neutral'}>
                 {listing.description}
               </Typography>
             )}

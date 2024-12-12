@@ -198,20 +198,6 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
             'circle-stroke-color': '#fff'
           }}
         />
-
-        <Layer
-          id="unclustered-point-count"
-          type="symbol"
-          filter={['!', ['has', 'point_count']]}
-          layout={{
-            'text-field': '$',
-            'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-            'text-size': 12
-          }}
-          paint={{
-            'text-color': '#ffffff'
-          }}
-        />
       </Source>
 
       {selectedListing && (
