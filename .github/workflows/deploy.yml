@@ -65,9 +65,6 @@ jobs:
           mkdir -p packages/client/dist
           touch packages/client/dist/.nojekyll
 
-      - name: Copy CNAME
-        run: cp packages/client/public/CNAME packages/client/dist/
-
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
@@ -76,7 +73,6 @@ jobs:
           clean: true
           clean-exclude: |
             .nojekyll
-            CNAME
           commit-message: |
             Deploy: ${{ github.event.head_commit.message }}
             
