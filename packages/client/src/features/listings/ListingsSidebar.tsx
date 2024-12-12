@@ -2,15 +2,9 @@ import Box from '@mui/joy/Box';
 import CircularProgress from '@mui/joy/CircularProgress';
 import Card from '@mui/joy/Card';
 import Typography from '@mui/joy/Typography';
-import AspectRatio from '@mui/joy/AspectRatio';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import type { Listing } from '@fairhome/shared/src/types';
 import { formatPrice, formatArea, formatBedBath, formatAddress } from '../../utils/formatting';
-import { getNearestImage } from '../../services/mapillary';
-
-interface ListingWithImage extends Listing {
-  imageUrl?: string | null;
-}
 
 interface ListingsSidebarProps {
   listings?: Listing[];
@@ -26,20 +20,6 @@ function ListingsSidebar({
   onListingClick 
 }: ListingsSidebarProps) {
   const selectedRef = useRef<HTMLDivElement>(null);
-  const [listingsWithImages, setListingsWithImages] = useState<ListingWithImage[]>([]);
-
-  useEffect(() => {
-    async function fetchImages() {
-      const withImages = await Promise.all(
-        listings.map(async (listing) => {
-          const imageUrl = await getNearestImage(listing.latitude, listing.longitude);
-          return { ...listing, imageUrl };
-        })
-      );
-      setListingsWithImages(withImages);
-    }
-    fetchImages();
-  }, [listings]);
 
   useEffect(() => {
     if (selectedListing && selectedRef.current) {
@@ -95,7 +75,7 @@ function ListingsSidebar({
         scrollbarWidth: 'none',
         '-ms-overflow-style': 'none'
       }}>
-        {listingsWithImages.map(listing => (
+        {listings.map(listing => (
           <Card
             key={listing.id}
             ref={listing.id === selectedListing?.id ? selectedRef : null}
@@ -126,16 +106,6 @@ function ListingsSidebar({
               }
             }}
           >
-            {listing.imageUrl && (
-              <AspectRatio ratio="16/9" sx={{ mb: 1 }}>
-                <img
-                  src={listing.imageUrl}
-                  alt={`Street view of ${listing.address}`}
-                  style={{ objectFit: 'cover', borderRadius: '8px' }}
-                  loading="lazy"
-                />
-              </AspectRatio>
-            )}
             <Typography level="title-lg">
               {formatPrice(listing.price)}
             </Typography>
