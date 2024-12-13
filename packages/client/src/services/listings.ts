@@ -6,31 +6,50 @@ type DbListing = Database['public']['Tables']['listings']['Row'];
 
 export async function fetchListings(): Promise<Listing[]> {
   try {
+    console.log('Fetching listings from Supabase...');
+    console.log('Supabase URL:', import.meta.env.VITE_SUPABASE_URL);
+    
     const { data, error } = await supabase.from('listings').select('*');
     
     if (error) {
       console.error('Supabase error:', error);
+      console.error('Error details:', {
+        message: error.message,
+        details: error.details,
+        hint: error.hint
+      });
       return [];
     }
 
-    return (data as DbListing[]).map(item => ({
-      id: item.id,
-      developerId: item.developer_id || '',
-      title: item.title,
-      description: item.description || '',
-      address: item.address,
-      price: Number(item.price),
-      bedrooms: item.bedrooms,
-      bathrooms: item.bathrooms,
-      squareFeet: item.square_feet,
-      photos: item.photos,
-      amenities: item.amenities,
-      ...extractLatLng(item.location),
-      createdAt: new Date(item.created_at),
-      updatedAt: new Date(item.updated_at)
-    }));
+    console.log('Fetched listings:', data?.length || 0);
+    
+    return (data as DbListing[]).map(item => {
+      console.log('Processing listing:', item.id);
+      return {
+        id: item.id,
+        developerId: item.developer_id || '',
+        title: item.title,
+        description: item.description || '',
+        address: item.address,
+        price: Number(item.price),
+        bedrooms: item.bedrooms,
+        bathrooms: item.bathrooms,
+        squareFeet: item.square_feet,
+        photos: item.photos,
+        amenities: item.amenities,
+        ...extractLatLng(item.location),
+        createdAt: new Date(item.created_at),
+        updatedAt: new Date(item.updated_at)
+      };
+    });
   } catch (error) {
     console.error('Unexpected error:', error);
+    if (error instanceof Error) {
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack
+      });
+    }
     return [];
   }
 }
