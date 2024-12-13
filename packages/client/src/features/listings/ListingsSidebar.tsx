@@ -2,7 +2,10 @@ import Box from '@mui/joy/Box';
 import CircularProgress from '@mui/joy/CircularProgress';
 import Card from '@mui/joy/Card';
 import Typography from '@mui/joy/Typography';
-import { useEffect, useRef } from 'react';
+import IconButton from '@mui/joy/IconButton';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import { useEffect, useRef, useState } from 'react';
 import type { Listing } from '@fairhome/shared/src/types';
 import { formatPrice, formatArea, formatBedBath, formatAddress } from '../../utils/formatting';
 
@@ -20,6 +23,7 @@ function ListingsSidebar({
   onListingClick 
 }: ListingsSidebarProps) {
   const selectedRef = useRef<HTMLDivElement>(null);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
     if (selectedListing && selectedRef.current) {
@@ -47,15 +51,43 @@ function ListingsSidebar({
   return (
     <Box 
       sx={{ 
-        width: 360, 
+        position: 'relative',
+        width: isCollapsed ? '0px' : '360px',
+        minWidth: isCollapsed ? '0px' : '360px',
         height: '100%',
-        borderRight: '1px solid', 
+        borderRight: isCollapsed ? 'none' : '1px solid',
         borderColor: 'divider',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        transition: 'all 0.3s ease-in-out',
+        overflow: 'hidden',
+        bgcolor: isCollapsed ? 'transparent' : 'background.surface',
+        pointerEvents: 'all',
+        zIndex: 1100
       }}
     >
-      <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+      {/* Toggle Button */}
+      <IconButton
+        onClick={() => setIsCollapsed(!isCollapsed)}
+        sx={{
+          position: 'fixed',
+          left: isCollapsed ? 16 : 340,
+          top: '50%',
+          transform: 'translateY(-50%)',
+          zIndex: 1200,
+          bgcolor: 'background.surface',
+          borderRadius: '50%',
+          boxShadow: 'md',
+          pointerEvents: 'all',
+          '&:hover': {
+            bgcolor: 'background.level1'
+          }
+        }}
+      >
+        {isCollapsed ? <KeyboardArrowRightIcon /> : <KeyboardArrowLeftIcon />}
+      </IconButton>
+
+      <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider', whiteSpace: 'nowrap' }}>
         <Typography level="h4">
           {listings.length} visible {listings.length === 1 ? 'listing' : 'listings'} in view
         </Typography>
@@ -86,6 +118,7 @@ function ListingsSidebar({
               transition: 'all 0.3s ease-in-out',
               opacity: 1,
               animation: 'fadeIn 0.3s ease-in',
+              whiteSpace: 'nowrap',
               ...(listing.id === selectedListing?.id && {
                 bgcolor: '#74C2E1',
                 color: 'white'

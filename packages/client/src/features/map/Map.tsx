@@ -181,13 +181,13 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
             'circle-color': [
               'step',
               ['get', 'point_count'],
-              '#74C2E1',  // Chicago flag light blue
-              10,
-              '#74C2E1',  // Chicago flag light blue
-              25,
               '#C3272B',  // Chicago flag red
+              10,
+              '#C3272B',  // Chicago flag red
+              25,
+              '#74C2E1',  // Chicago flag light blue
               50,
-              '#C3272B'   // Chicago flag red
+              '#74C2E1'   // Chicago flag light blue
             ],
             'circle-radius': [
               'step',
@@ -199,7 +199,9 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
               30,
               50,
               35
-            ]
+            ],
+            'circle-stroke-width': 2,
+            'circle-stroke-color': '#fff'
           }}
         />
 

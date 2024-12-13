@@ -13,6 +13,8 @@ import CircularProgress from '@mui/joy/CircularProgress';
 import IconButton from '@mui/joy/IconButton';
 import ViewListRoundedIcon from '@mui/icons-material/ViewListRounded';
 import MapRoundedIcon from '@mui/icons-material/MapRounded';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MapView from '../features/map/Map';
 import type { SearchLocation } from '../types/search';
 
@@ -33,6 +35,7 @@ function ComponentLoader() {
 function HomePage() {
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
   const [showMap, setShowMap] = useState(true);
+  const [isFiltersCollapsed, setIsFiltersCollapsed] = useState(false);
   const mapRef = useRef<MapRef>(null);
   const { handleViewportChange, isInViewport } = useMapViewport();
   const { selectedNeighborhood, selectedAlderperson, handleNeighborhoodSelect, handleAlderpersonSelect } = useSearch();
@@ -83,64 +86,111 @@ function HomePage() {
         position: 'relative',
         zIndex: 1,
         height: '100%',
-        pointerEvents: 'none' // Allow clicking through to map
+        pointerEvents: 'none'
       }}>
         {/* Search and Filters Bar (Desktop Only) */}
         <Box sx={{ 
           display: { xs: 'none', md: 'flex' },
           flexDirection: 'column',
-          gap: 2,
-          p: 2,
+          position: 'absolute',
+          top: 0,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: 'auto',
+          minWidth: '600px',
           bgcolor: 'background.surface',
-          borderBottom: '1px solid',
-          borderColor: 'divider',
+          borderRadius: '0 0 12px 12px',
+          boxShadow: 'md',
+          overflow: 'visible',
           pointerEvents: 'auto'
         }}>
-          <Box sx={{ display: 'flex', gap: 2 }}>
-            <SearchBar 
-              onLocationSelect={handleLocationSelect}
-              onNeighborhoodSelect={(n) => handleNeighborhoodSelect(n, handleLocationSelect)}
-              selectedNeighborhood={selectedNeighborhood}
-            />
-            <AlderpersonSearch
-              onAlderpersonSelect={handleAlderpersonSelect}
-              selectedAlderperson={selectedAlderperson}
-            />
+          <Box sx={{ 
+            position: 'relative',
+            py: 2,
+            px: 2, 
+            display: 'flex', 
+            flexDirection: 'column', 
+            gap: 2,
+            transition: 'transform 0.3s ease-in-out',
+            marginTop: isFiltersCollapsed ? '-120px' : 0
+          }}>
+            <Box sx={{ 
+              display: 'flex', 
+              gap: 2, 
+              alignItems: 'center'
+            }}>
+              <Box sx={{ display: 'flex', gap: 2, flex: 1 }}>
+                <SearchBar 
+                  onLocationSelect={handleLocationSelect}
+                  onNeighborhoodSelect={(n) => handleNeighborhoodSelect(n, handleLocationSelect)}
+                  selectedNeighborhood={selectedNeighborhood}
+                />
+                <AlderpersonSearch
+                  onAlderpersonSelect={handleAlderpersonSelect}
+                  selectedAlderperson={selectedAlderperson}
+                />
+              </Box>
+            </Box>
+            <Box sx={{ 
+              maxHeight: isFiltersCollapsed ? '0px' : '500px',
+              opacity: isFiltersCollapsed ? 0 : 1,
+              transition: 'all 0.3s ease-in-out',
+              overflow: 'hidden'
+            }}>
+              <Suspense fallback={<ComponentLoader />}>
+                <MapFilters
+                  priceRange={[0, 5000]}
+                  onPriceRangeChange={() => {}}
+                  squareFootageRange={[0, 2000]}
+                  onSquareFootageRangeChange={() => {}}
+                  bedrooms={null}
+                  onBedroomsChange={() => {}}
+                  bathrooms={null}
+                  onBathroomsChange={() => {}}
+                  maxPrice={5000}
+                  maxSquareFootage={2000}
+                />
+              </Suspense>
+            </Box>
           </Box>
-          <Suspense fallback={<ComponentLoader />}>
-            <MapFilters
-              priceRange={[0, 5000]}
-              onPriceRangeChange={() => {}}
-              squareFootageRange={[0, 2000]}
-              onSquareFootageRangeChange={() => {}}
-              bedrooms={null}
-              onBedroomsChange={() => {}}
-              bathrooms={null}
-              onBathroomsChange={() => {}}
-              maxPrice={5000}
-              maxSquareFootage={2000}
-            />
-          </Suspense>
+          {/* Toggle Button */}
+          <IconButton
+            onClick={() => setIsFiltersCollapsed(!isFiltersCollapsed)}
+            variant="soft"
+            sx={{ 
+              position: 'absolute',
+              left: '50%',
+              bottom: isFiltersCollapsed ? -20 : -40,
+              transform: 'translateX(-50%)',
+              zIndex: 1200,
+              bgcolor: 'background.surface',
+              borderRadius: '50%',
+              boxShadow: 'md',
+              transition: 'all 0.3s ease-in-out',
+              '&:hover': {
+                bgcolor: 'background.level1'
+              }
+            }}
+          >
+            {isFiltersCollapsed ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}
+          </IconButton>
         </Box>
 
         {/* Desktop Layout */}
         <Box sx={{ 
           display: { xs: 'none', md: 'flex' },
-          height: '100%'
+          height: '100%',
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          zIndex: 10
         }}>
-          <Box sx={{ 
-            width: 360,
-            height: '100%',
-            bgcolor: 'background.surface',
-            pointerEvents: 'auto' // Re-enable pointer events
-          }}>
-            <ListingsSidebar
-              listings={visibleListings}
-              isLoading={isLoading}
-              selectedListing={selectedListing}
-              onListingClick={setSelectedListing}
-            />
-          </Box>
+          <ListingsSidebar
+            listings={visibleListings}
+            isLoading={isLoading}
+            selectedListing={selectedListing}
+            onListingClick={setSelectedListing}
+          />
         </Box>
 
         {/* Mobile Layout */}
