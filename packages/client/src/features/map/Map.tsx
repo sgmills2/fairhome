@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, forwardRef } from 'react';
-import Map, { Popup, Source, Layer, ViewStateChangeEvent } from 'react-map-gl';
+import Map, { Popup, Source, Layer, ViewStateChangeEvent, MapLayerMouseEvent } from 'react-map-gl';
 import type { MapRef } from 'react-map-gl';
 import type { FeatureCollection, Feature, Point } from 'geojson';
 import { Typography, Card } from '@mui/joy';
@@ -17,6 +17,8 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
   selectedNeighborhood 
 }, ref) => {
   const [zoom, setZoom] = useState(11);
+  const [isHovering, setIsHovering] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   // Calculate cluster radius based on zoom
   const clusterRadius = useMemo(() => {
@@ -71,35 +73,53 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
     }
   }, [selectedListing, ref]);
 
-  const handleClick = (event: any) => {
+  const handleClick = (event: MapLayerMouseEvent) => {
     const features = event.features;
     if (!features || features.length === 0) return;
 
     const feature = features[0];
     const properties = feature.properties;
 
-    if (properties.cluster) {
+    if (properties?.cluster) {
       const clusterId = properties.cluster_id;
       const mapInstance = typeof ref === 'function' ? null : ref?.current;
       const source = mapInstance?.getSource('listings');
 
       if (source && 'getClusterExpansionZoom' in source) {
-        source.getClusterExpansionZoom(clusterId, (err: any, zoom: number | null | undefined) => {
-          if (err) return;
+        source.getClusterExpansionZoom(clusterId, (error: Error | null | undefined, zoom: number | null | undefined) => {
+          if (!zoom || error) return;
 
           mapInstance?.flyTo({
-            center: feature.geometry.coordinates as [number, number],
+            center: (feature.geometry as Point).coordinates as [number, number],
             zoom: zoom ?? 11,
             duration: 500
           });
         });
       }
-    } else {
-      const listing = listings.find(l => l.id === feature.properties.id);
+    } else if (properties) {
+      const listing = listings.find(l => l.id === properties.id);
       if (listing) {
         onListingClick(listing);
       }
     }
+  };
+
+  const handleMouseEnter = (event: MapLayerMouseEvent) => {
+    if (event.features?.length) {
+      setIsHovering(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+  };
+
+  const handleDragStart = () => {
+    setIsDragging(true);
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
   };
 
   return (
@@ -117,8 +137,12 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
       interactiveLayerIds={['clusters', 'unclustered-point']}
       onClick={handleClick}
       dragRotate={false}
-      cursor="pointer"
       attributionControl={false}
+      cursor={isHovering ? 'pointer' : isDragging ? 'grabbing' : 'grab'}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
     >
       <Source id="neighborhoods" type="geojson" data={chicagoNeighborhoods}>
         <Layer
