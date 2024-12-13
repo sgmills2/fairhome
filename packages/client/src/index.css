@@ -32,6 +32,22 @@ body {
   border-top-color: #fff !important;
 }
 
+.mapboxgl-popup-close-button {
+  padding: 4px 8px !important;
+  right: 4px !important;
+  top: 4px !important;
+  color: var(--joy-palette-neutral-500) !important;
+  font-size: 20px !important;
+  font-family: var(--joy-fontFamily-body) !important;
+  border-radius: var(--joy-radius-sm) !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.mapboxgl-popup-close-button:hover {
+  background-color: var(--joy-palette-neutral-100) !important;
+  color: var(--joy-palette-neutral-700) !important;
+}
+
 /* Hide Mapbox controls */
 .mapboxgl-control-container {
   display: none !important;

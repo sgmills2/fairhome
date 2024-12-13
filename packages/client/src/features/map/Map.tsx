@@ -214,25 +214,27 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
           onClose={() => onListingClick(null)}
           closeButton={true}
           closeOnClick={false}
-          className="mapboxgl-popup-no-shadow"
           offset={25}
-          style={{ zIndex: 3 }}
         >
-          <Card variant="outlined" sx={{ 
-            maxWidth: 300, 
-            p: 1,
-            bgcolor: 'background.surface',
-            boxShadow: 'sm',
-            position: 'relative'
-          }}>
-            <Typography level="h4" fontSize="md">
+          <Card
+            variant="outlined"
+            sx={{
+              p: 1.5,
+              minWidth: 250,
+              '--Card-radius': 'var(--joy-radius-lg)',
+              boxShadow: 'md',
+              bgcolor: 'background.popup',
+              borderColor: 'neutral.outlinedBorder'
+            }}
+          >
+            <Typography level="title-lg" sx={{ color: 'primary.500', mb: 0.5 }}>
               {formatPrice(selectedListing.price)}
             </Typography>
-            <Typography level="body-sm">
+            <Typography level="body-sm" sx={{ mb: 0.5 }}>
               {formatBedBath(selectedListing.bedrooms, selectedListing.bathrooms)}
-              {selectedListing.area && ` · ${formatArea(selectedListing.area)}`}
+              {selectedListing.squareFeet && ` · ${formatArea(selectedListing.squareFeet)}`}
             </Typography>
-            <Typography level="body-sm">
+            <Typography level="body-sm" sx={{ color: 'neutral.600' }}>
               {formatAddress(selectedListing.address)}
             </Typography>
           </Card>
