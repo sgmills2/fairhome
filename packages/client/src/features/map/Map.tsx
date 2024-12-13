@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, forwardRef } from 'react';
 import Map, { Popup, Source, Layer, ViewStateChangeEvent } from 'react-map-gl';
 import type { MapRef } from 'react-map-gl';
 import type { FeatureCollection, Feature, Point } from 'geojson';
-import { Box, Typography, Card } from '@mui/joy';
+import { Typography, Card } from '@mui/joy';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { config } from '../../config';
 import { chicagoNeighborhoods } from '../../data/chicago-neighborhoods';
@@ -80,17 +80,20 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
 
     if (properties.cluster) {
       const clusterId = properties.cluster_id;
-      const source = (ref as any)?.current?.getSource('listings');
+      const mapInstance = typeof ref === 'function' ? null : ref?.current;
+      const source = mapInstance?.getSource('listings');
 
-      source?.getClusterExpansionZoom(clusterId, (err: any, zoom: number) => {
-        if (err) return;
+      if (source && 'getClusterExpansionZoom' in source) {
+        source.getClusterExpansionZoom(clusterId, (err: any, zoom: number | null | undefined) => {
+          if (err) return;
 
-        (ref as any)?.current?.flyTo({
-          center: feature.geometry.coordinates as [number, number],
-          zoom,
-          duration: 500
+          mapInstance?.flyTo({
+            center: feature.geometry.coordinates as [number, number],
+            zoom: zoom ?? 11,
+            duration: 500
+          });
         });
-      });
+      }
     } else {
       const listing = listings.find(l => l.id === feature.properties.id);
       if (listing) {
@@ -209,26 +212,27 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
           latitude={selectedListing.latitude}
           anchor="bottom"
           onClose={() => onListingClick(null)}
-          closeButton={false}
+          closeButton={true}
+          closeOnClick={false}
           className="mapboxgl-popup-no-shadow"
+          offset={25}
+          style={{ zIndex: 3 }}
         >
-          <Card
-            variant="outlined"
-            sx={{
-              p: 1.5,
-              boxShadow: 'md',
-              minWidth: 200,
-              bgcolor: 'background.surface',
-              '--Card-radius': '8px'
-            }}
-          >
-            <Typography level="title-lg" sx={{ color: '#74C2E1' }}>
+          <Card variant="outlined" sx={{ 
+            maxWidth: 300, 
+            p: 1,
+            bgcolor: 'background.surface',
+            boxShadow: 'sm',
+            position: 'relative'
+          }}>
+            <Typography level="h4" fontSize="md">
               {formatPrice(selectedListing.price)}
             </Typography>
             <Typography level="body-sm">
-              {formatBedBath(selectedListing.bedrooms, selectedListing.bathrooms)} • {formatArea(selectedListing.squareFeet)}
+              {formatBedBath(selectedListing.bedrooms, selectedListing.bathrooms)}
+              {selectedListing.area && ` · ${formatArea(selectedListing.area)}`}
             </Typography>
-            <Typography level="body-sm" color="neutral">
+            <Typography level="body-sm">
               {formatAddress(selectedListing.address)}
             </Typography>
           </Card>

@@ -15,6 +15,11 @@ body {
 }
 
 /* Mapbox popup customization */
+.mapboxgl-popup {
+  z-index: 3;
+  position: absolute;
+}
+
 .mapboxgl-popup-content {
   padding: 0 !important;
   border-radius: 8px !important;

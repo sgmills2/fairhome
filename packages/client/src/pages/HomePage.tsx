@@ -1,7 +1,7 @@
 import Box from '@mui/joy/Box';
 import { useQuery } from 'react-query';
-import { useState, useMemo, useRef, Suspense } from 'react';
-import { Map, MapFilters } from '../features/map';
+import { useState, useRef, Suspense } from 'react';
+import { MapFilters } from '../features/map';
 import { SearchBar, AlderpersonSearch } from '../features/search';
 import { ListingsSidebar } from '../features/listings';
 import { fetchListings } from '../services/listings';
@@ -10,6 +10,11 @@ import type { MapRef } from 'react-map-gl';
 import { useMapViewport } from '../features/map/hooks/useMapViewport';
 import { useSearch } from '../features/search/hooks/useSearch';
 import CircularProgress from '@mui/joy/CircularProgress';
+import IconButton from '@mui/joy/IconButton';
+import ViewListRoundedIcon from '@mui/icons-material/ViewListRounded';
+import MapRoundedIcon from '@mui/icons-material/MapRounded';
+import MapView from '../features/map/Map';
+import type { SearchLocation } from '../types/search';
 
 function ComponentLoader() {
   return (
@@ -26,127 +31,159 @@ function ComponentLoader() {
 }
 
 function HomePage() {
-  const { data: listings = [], isLoading } = useQuery('listings', fetchListings);
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
+  const [showMap, setShowMap] = useState(true);
   const mapRef = useRef<MapRef>(null);
-  
   const { handleViewportChange, isInViewport } = useMapViewport();
+  const { selectedNeighborhood, selectedAlderperson, handleNeighborhoodSelect, handleAlderpersonSelect } = useSearch();
 
-  const {
-    selectedNeighborhood,
-    selectedAlderperson,
-    handleNeighborhoodSelect,
-    handleAlderpersonSelect
-  } = useSearch();
+  const { data: listings = [], isLoading } = useQuery('listings', fetchListings);
 
-  // Calculate max values for filters
-  const { maxPrice, maxSquareFootage } = useMemo(() => ({
-    maxPrice: Math.max(...listings.map(l => l.price), 5000),
-    maxSquareFootage: Math.max(...listings.map(l => l.squareFeet), 1000)
-  }), [listings]);
+  const visibleListings = listings.filter(listing => 
+    isInViewport(listing.latitude, listing.longitude)
+  );
 
-  // Filter states
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, maxPrice]);
-  const [squareFootageRange, setSquareFootageRange] = useState<[number, number]>([0, maxSquareFootage]);
-  const [bedrooms, setBedrooms] = useState<number | null>(null);
-  const [bathrooms, setBathrooms] = useState<number | null>(null);
-
-  // Memoized filter function
-  const filterListings = useMemo(() => {
-    return listings.filter(listing => {
-      const matchesPrice = listing.price >= priceRange[0] && listing.price <= priceRange[1];
-      const matchesSquareFootage = listing.squareFeet >= squareFootageRange[0] && 
-                                  listing.squareFeet <= squareFootageRange[1];
-      const matchesBedrooms = bedrooms ? listing.bedrooms >= bedrooms : true;
-      const matchesBathrooms = bathrooms ? listing.bathrooms >= bathrooms : true;
-      const matchesViewport = isInViewport(listing.latitude, listing.longitude);
-
-      return matchesPrice && matchesSquareFootage && matchesBedrooms && matchesBathrooms && matchesViewport;
-    });
-  }, [listings, priceRange, squareFootageRange, bedrooms, bathrooms, isInViewport]);
-
-  const handleLocationSelect = (location: { latitude: number; longitude: number }) => {
-    mapRef.current?.flyTo({
-      center: [location.longitude, location.latitude],
-      zoom: 14,
-      duration: 2000
-    });
+  const handleLocationSelect = (location: SearchLocation) => {
+    if (mapRef.current) {
+      mapRef.current.flyTo({
+        center: [location.longitude, location.latitude],
+        zoom: 14,
+        duration: 2000
+      });
+    }
   };
 
   return (
-    <Box 
-      sx={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        height: 'calc(100vh - 108px)',
-        overflow: 'hidden'
-      }}
-    >
-      {/* Search and Filters Container */}
-      <Box 
-        sx={{ 
-          p: 2, 
-          borderBottom: '1px solid', 
-          borderColor: 'divider',
-          display: 'flex',
-          gap: 2,
-          flexDirection: 'column'
-        }}
-      >
-        {/* Search Bars Container */}
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-          <SearchBar 
-            onLocationSelect={handleLocationSelect}
-            onNeighborhoodSelect={(n) => handleNeighborhoodSelect(n, handleLocationSelect)}
-            selectedNeighborhood={selectedNeighborhood}
-          />
-          <AlderpersonSearch
-            onAlderpersonSelect={handleAlderpersonSelect}
-            selectedAlderperson={selectedAlderperson}
-          />
-        </Box>
-        <Suspense fallback={<ComponentLoader />}>
-          <MapFilters
-            priceRange={priceRange}
-            onPriceRangeChange={setPriceRange}
-            squareFootageRange={squareFootageRange}
-            onSquareFootageRangeChange={setSquareFootageRange}
-            bedrooms={bedrooms}
-            onBedroomsChange={setBedrooms}
-            bathrooms={bathrooms}
-            onBathroomsChange={setBathrooms}
-            maxPrice={maxPrice}
-            maxSquareFootage={maxSquareFootage}
-          />
-        </Suspense>
-      </Box>
-
-      {/* Map and Sidebar Container */}
-      <Box 
-        sx={{ 
-          display: 'flex', 
-          flex: 1,
-          minHeight: 0,
-          position: 'relative'
-        }}
-      >
-        <ListingsSidebar 
-          listings={filterListings} 
-          isLoading={isLoading}
+    <Box sx={{ 
+      height: 'calc(100vh - 64px)', // Subtract navbar height
+      position: 'relative',
+      overflow: 'hidden'
+    }}>
+      {/* Map Layer (Bottom) */}
+      <Box sx={{ 
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 0
+      }}>
+        <MapView
+          ref={mapRef}
+          listings={listings}
           selectedListing={selectedListing}
           onListingClick={setSelectedListing}
+          onViewportChange={handleViewportChange}
+          selectedNeighborhood={selectedNeighborhood}
         />
-        <Box sx={{ flexGrow: 1, position: 'relative' }}>
-          <Suspense fallback={<ComponentLoader />}>
-            <Map 
-              ref={mapRef}
-              listings={filterListings}
-              selectedListing={selectedListing}
-              onListingClick={setSelectedListing}
-              onViewportChange={handleViewportChange}
+      </Box>
+
+      {/* UI Overlay Layer (Top) */}
+      <Box sx={{ 
+        position: 'relative',
+        zIndex: 1,
+        height: '100%',
+        pointerEvents: 'none' // Allow clicking through to map
+      }}>
+        {/* Search and Filters Bar (Desktop Only) */}
+        <Box sx={{ 
+          display: { xs: 'none', md: 'flex' },
+          flexDirection: 'column',
+          gap: 2,
+          p: 2,
+          bgcolor: 'background.surface',
+          borderBottom: '1px solid',
+          borderColor: 'divider',
+          pointerEvents: 'auto'
+        }}>
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            <SearchBar 
+              onLocationSelect={handleLocationSelect}
+              onNeighborhoodSelect={(n) => handleNeighborhoodSelect(n, handleLocationSelect)}
               selectedNeighborhood={selectedNeighborhood}
             />
+            <AlderpersonSearch
+              onAlderpersonSelect={handleAlderpersonSelect}
+              selectedAlderperson={selectedAlderperson}
+            />
+          </Box>
+          <Suspense fallback={<ComponentLoader />}>
+            <MapFilters
+              priceRange={[0, 5000]}
+              onPriceRangeChange={() => {}}
+              squareFootageRange={[0, 2000]}
+              onSquareFootageRangeChange={() => {}}
+              bedrooms={null}
+              onBedroomsChange={() => {}}
+              bathrooms={null}
+              onBathroomsChange={() => {}}
+              maxPrice={5000}
+              maxSquareFootage={2000}
+            />
           </Suspense>
+        </Box>
+
+        {/* Desktop Layout */}
+        <Box sx={{ 
+          display: { xs: 'none', md: 'flex' },
+          height: '100%'
+        }}>
+          <Box sx={{ 
+            width: 360,
+            height: '100%',
+            bgcolor: 'background.surface',
+            pointerEvents: 'auto' // Re-enable pointer events
+          }}>
+            <ListingsSidebar
+              listings={visibleListings}
+              isLoading={isLoading}
+              selectedListing={selectedListing}
+              onListingClick={setSelectedListing}
+            />
+          </Box>
+        </Box>
+
+        {/* Mobile Layout */}
+        <Box sx={{ 
+          display: { xs: 'flex', md: 'none' },
+          height: '100%'
+        }}>
+          {!showMap && (
+            <Box sx={{ 
+              width: '100%',
+              height: '100%',
+              bgcolor: 'background.surface',
+              pointerEvents: 'auto'
+            }}>
+              <ListingsSidebar
+                listings={visibleListings}
+                isLoading={isLoading}
+                selectedListing={selectedListing}
+                onListingClick={setSelectedListing}
+              />
+            </Box>
+          )}
+        </Box>
+
+        {/* Mobile View Toggle */}
+        <Box sx={{ 
+          display: { xs: 'flex', md: 'none' },
+          position: 'absolute',
+          bottom: 16,
+          right: 16,
+          zIndex: 2,
+          bgcolor: 'background.surface',
+          borderRadius: 'xl',
+          boxShadow: 'md',
+          pointerEvents: 'auto'
+        }}>
+          <IconButton
+            onClick={() => setShowMap(!showMap)}
+            variant="soft"
+            sx={{ borderRadius: 'xl' }}
+          >
+            {showMap ? <ViewListRoundedIcon /> : <MapRoundedIcon />}
+          </IconButton>
         </Box>
       </Box>
     </Box>
