@@ -56,6 +56,11 @@ function HomePage() {
     }
   };
 
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
+  const [squareFootageRange, setSquareFootageRange] = useState<[number, number]>([0, 2000]);
+  const [bedrooms, setBedrooms] = useState<number | null>(null);
+  const [bathrooms, setBathrooms] = useState<number | null>(null);
+
   return (
     <Box sx={{ 
       height: 'calc(100vh - 64px)', // Subtract navbar height
@@ -90,14 +95,15 @@ function HomePage() {
       }}>
         {/* Search and Filters Bar (Desktop Only) */}
         <Box sx={{ 
-          display: { xs: 'none', md: 'flex' },
+          display: { xs: 'flex', md: 'flex' },
           flexDirection: 'column',
           position: 'absolute',
           top: 0,
           left: '50%',
           transform: 'translateX(-50%)',
           width: 'auto',
-          minWidth: '600px',
+          minWidth: { md: '600px', lg: '800px' },
+          maxWidth: '60vw',
           bgcolor: 'background.surface',
           borderRadius: '0 0 12px 12px',
           boxShadow: 'md',
@@ -117,9 +123,10 @@ function HomePage() {
             <Box sx={{ 
               display: 'flex', 
               gap: 2, 
-              alignItems: 'center'
+              alignItems: 'center',
+              justifyContent: 'center'
             }}>
-              <Box sx={{ display: 'flex', gap: 2, flex: 1 }}>
+              <Box sx={{ display: 'flex', gap: 2, flex: 1, justifyContent: 'center' }}>
                 <SearchBar 
                   onLocationSelect={handleLocationSelect}
                   onNeighborhoodSelect={(n) => handleNeighborhoodSelect(n, handleLocationSelect)}
@@ -139,14 +146,14 @@ function HomePage() {
             }}>
               <Suspense fallback={<ComponentLoader />}>
                 <MapFilters
-                  priceRange={[0, 5000]}
-                  onPriceRangeChange={() => {}}
-                  squareFootageRange={[0, 2000]}
-                  onSquareFootageRangeChange={() => {}}
-                  bedrooms={null}
-                  onBedroomsChange={() => {}}
-                  bathrooms={null}
-                  onBathroomsChange={() => {}}
+                  priceRange={priceRange}
+                  onPriceRangeChange={setPriceRange}
+                  squareFootageRange={squareFootageRange}
+                  onSquareFootageRangeChange={setSquareFootageRange}
+                  bedrooms={bedrooms}
+                  onBedroomsChange={setBedrooms}
+                  bathrooms={bathrooms}
+                  onBathroomsChange={setBathrooms}
                   maxPrice={5000}
                   maxSquareFootage={2000}
                 />
