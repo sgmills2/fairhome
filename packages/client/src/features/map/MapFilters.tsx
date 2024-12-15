@@ -42,12 +42,16 @@ function MapFilters({
       borderBottom: '1px solid', 
       borderColor: 'divider',
       display: 'flex',
-      gap: 4,
+      gap: { md: 2, lg: 4 },
       alignItems: 'flex-start',
       flexWrap: 'wrap'
     }}>
       {/* Price Range Filter */}
-      <Box sx={{ flexGrow: 1, minWidth: 200 }}>
+      <Box sx={{ 
+        flexGrow: 1, 
+        minWidth: { md: '180px', lg: '200px' },
+        maxWidth: '300px'
+      }}>
         <Typography level="body-sm" mb={1}>
           Price Range: ${priceRange[0].toLocaleString()} - ${priceRange[1].toLocaleString()}
         </Typography>
@@ -74,7 +78,11 @@ function MapFilters({
       </Box>
 
       {/* Square Footage Range Filter */}
-      <Box sx={{ flexGrow: 1, minWidth: 200 }}>
+      <Box sx={{ 
+        flexGrow: 1, 
+        minWidth: { md: '180px', lg: '200px' },
+        maxWidth: '300px'
+      }}>
         <Typography level="body-sm" mb={1}>
           Square Footage: {squareFootageRange[0]} - {squareFootageRange[1]} sq ft
         </Typography>
@@ -101,15 +109,15 @@ function MapFilters({
       </Box>
 
       {/* Bedrooms Filter */}
-      <Box>
+      <Box sx={{ width: { md: '100px', lg: '120px' } }}>
         <Typography level="body-sm" mb={1}>
           Bedrooms
         </Typography>
         <Select
-          placeholder="Bedrooms"
+          placeholder="Any"
           value={bedroomValue}
           onChange={handleBedroomChange}
-          sx={{ minWidth: 120 }}
+          sx={{ width: '100%' }}
         >
           <Option value="">Any</Option>
           <Option value="1">1+</Option>
@@ -120,15 +128,15 @@ function MapFilters({
       </Box>
 
       {/* Bathrooms Filter */}
-      <Box>
+      <Box sx={{ width: { md: '100px', lg: '120px' } }}>
         <Typography level="body-sm" mb={1}>
           Bathrooms
         </Typography>
         <Select
-          placeholder="Bathrooms"
+          placeholder="Any"
           value={bathroomValue}
           onChange={handleBathroomChange}
-          sx={{ minWidth: 120 }}
+          sx={{ width: '100%' }}
         >
           <Option value="">Any</Option>
           <Option value="1">1+</Option>

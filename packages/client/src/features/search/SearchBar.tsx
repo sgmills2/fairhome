@@ -45,7 +45,9 @@ function SearchBar({
       placeholder="Search by Neighborhood"
       options={searchOptions}
       value={selectedOption}
-      sx={{ width: 300 }}
+      sx={{ 
+        width: { md: '320px', lg: '360px' }
+      }}
       onChange={handleSelect}
       getOptionLabel={(option) => option.label}
     />

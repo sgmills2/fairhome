@@ -29,7 +29,9 @@ function AlderpersonSearch({
       placeholder="Search by Alder"
       options={PLACEHOLDER_ALDERPERSONS}
       value={selectedOption}
-      sx={{ width: 300 }}
+      sx={{ 
+        width: { md: '320px', lg: '360px' }
+      }}
       onChange={(_, value) => onAlderpersonSelect(value ? value.value : null)}
       getOptionLabel={(option) => option.label}
     />

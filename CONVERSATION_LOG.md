@@ -50,6 +50,27 @@ A web application to help Chicago residents find affordable housing, built with 
 - Created responsive layout with sidebar
 - Added progressive loading and performance optimizations
 
+### Responsive Design Guidelines
+- **Hybrid Approach to Units:**
+  ```tsx
+  // Example of recommended hybrid approach
+  sx={{
+    padding: '1rem',  // Spacing relative to font size
+    width: { md: '320px', lg: '360px' },  // Fixed breakpoints for layout
+    fontSize: '1.2rem',  // Typography with rem
+    marginBottom: '0.5em'  // Component-relative spacing
+  }}
+  ```
+  - Use `rem`/`em` for:
+    - Typography and font-related spacing
+    - Component-level padding/margins
+    - Elements that should scale with user preferences
+  - Use fixed units (`px`) with breakpoints for:
+    - Grid-based layouts
+    - Precise component widths
+    - Preventing unwanted wrapping
+    - Maintaining exact proportions
+
 ## Next Steps
 1. Research and implement custom domain deployment best practices
 2. Set up branch protection rules
