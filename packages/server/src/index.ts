@@ -1,5 +1,16 @@
 import dotenv from 'dotenv';
-dotenv.config();
+import path from 'path';
+
+// Load environment variables
+const envPath = path.resolve(__dirname, '../.env');
+console.log('Loading .env from:', envPath);
+dotenv.config({ path: envPath });
+
+console.log('Environment variables loaded:', {
+  SUPABASE_URL: process.env.SUPABASE_URL ? 'set' : 'not set',
+  SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY ? 'set' : 'not set',
+  PORT: process.env.PORT
+});
 
 import express from 'express';
 import cors from 'cors';
