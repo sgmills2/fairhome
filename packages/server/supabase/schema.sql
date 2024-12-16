@@ -73,11 +73,27 @@ alter table if exists public.developers enable row level security;
 alter table if exists public.listings enable row level security;
 
 -- Drop existing policies if they exist
+drop policy if exists "Developers are viewable by everyone" on public.developers;
+drop policy if exists "Developers are insertable by service role" on public.developers;
+drop policy if exists "Developers are updatable by service role" on public.developers;
 drop policy if exists "Listings are viewable by everyone" on public.listings;
 drop policy if exists "Listings are insertable by everyone" on public.listings;
 drop policy if exists "Listings are updatable by everyone" on public.listings;
 
--- Create public access policies
+-- Create developers policies
+create policy "Developers are viewable by everyone" 
+  on public.developers for select
+  using (true);
+
+create policy "Developers are insertable by service role" 
+  on public.developers for insert
+  with check (auth.role() = 'service_role');
+
+create policy "Developers are updatable by service role" 
+  on public.developers for update
+  using (auth.role() = 'service_role');
+
+-- Create listings policies
 create policy "Listings are viewable by everyone" 
   on public.listings for select
   using (true);
