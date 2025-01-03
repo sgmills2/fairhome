@@ -17,6 +17,16 @@ function Navbar() {
       <Typography level="h4" component="h1">
         Fairhome
       </Typography>
+      <Typography 
+        level="body-sm" 
+        sx={{ 
+          ml: 2,
+          color: 'neutral.500',
+          display: { xs: 'none', sm: 'block' }
+        }}
+      >
+        This Website is in Alpha & Represents Mock Data of Affordable Housing in Chicago
+      </Typography>
     </Box>
   );
 }
