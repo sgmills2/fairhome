@@ -2,10 +2,51 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="icon" type="image/x-icon" href="./favicon.ico" />
-    <title>Fairhome</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="FairHome - Discover affordable housing options in Chicago. Search, explore, and find your next home with our interactive map and comprehensive listings." />
+    <meta name="keywords" content="affordable housing, Chicago housing, rental listings, apartment search, housing assistance, fair housing" />
+    <meta name="author" content="FairHome" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://afairhome.org" />
+    <meta property="og:title" content="FairHome - Chicago Affordable Housing Search" />
+    <meta property="og:description" content="Find affordable housing options in Chicago with our interactive map and comprehensive listings." />
+    
+    <!-- Structured Data for Rich Results -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "FairHome",
+      "url": "https://afairhome.org",
+      "description": "Find affordable housing options in Chicago with our interactive map and comprehensive listings.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://afairhome.org/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2X60E5PZQK"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-2X60E5PZQK', {
+        'page_title': document.title,
+        'page_location': window.location.href,
+        'send_page_view': true
+      });
+    </script>
     <script type="text/javascript">
       // Single Page Apps for GitHub Pages
       // MIT License
@@ -21,6 +62,7 @@
         }
       }(window.location))
     </script>
+    <title>FairHome - Chicago Affordable Housing Search</title>
     <script type="module" crossorigin src="./assets/index-DgxO55_f.js"></script>
     <link rel="modulepreload" crossorigin href="./assets/mapbox-CLz0r7Zg.js">
     <link rel="modulepreload" crossorigin href="./assets/react-vendor-pMu2c3pO.js">
