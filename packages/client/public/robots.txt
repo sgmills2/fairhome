@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://afairhome.org/sitemap.xml 
