@@ -1,4 +1,4 @@
-# FairHome Roadmap
+# FairHome Development Roadmap
 
 ## Core Features (Implemented)
 - ✅ Interactive map with Chicago affordable housing listings
@@ -14,6 +14,30 @@
   - [x] Smooth transitions and animations
 
 ## Next Steps
+
+### SEO & Analytics Improvements
+1. **Google Search Console Integration**
+   - [ ] Submit sitemap.xml
+   - [ ] Verify domain ownership
+   - [ ] Monitor and fix any crawl errors
+
+2. **GA4 Event Tracking**
+   - [ ] Track user interactions:
+     - Search queries
+     - Filter usage
+     - Listing views
+     - Map interactions
+   - [ ] Set up conversion goals:
+     - Contact form submissions
+     - Listing inquiries
+     - Search completions
+
+3. **Performance Optimization**
+   - [ ] Implement lazy loading for images
+   - [ ] Add loading state placeholders
+   - [ ] Optimize bundle size
+   - [ ] Improve Core Web Vitals scores
+
 ### User Experience
 - [ ] User Authentication & Favorites
   - [ ] Supabase auth integration
@@ -26,10 +50,6 @@
   - [ ] Distance-based search
   - [ ] More detailed property information
   - [ ] Price range slider improvements
-  - [ ] Sync listings sidebar with map viewport
-    - [ ] Filter list to show only visible properties
-    - [ ] Update list order based on viewport position
-    - [ ] Dynamic loading based on zoom level
 
 - [ ] Performance & UX
   - [ ] Server-side pagination
@@ -76,6 +96,28 @@
   - [ ] End-to-end tests
   - [ ] Performance monitoring
 
+### Enhanced Analytics & SEO (Medium Priority)
+1. **Enhanced Analytics**
+   - [ ] Set up custom dimensions for:
+     - User neighborhoods
+     - Price ranges
+     - Housing types
+   - [ ] Create custom reports for:
+     - Most viewed listings
+     - Popular search areas
+     - User journey analysis
+
+2. **SEO Content Enhancement**
+   - [ ] Add dynamic meta tags for listing pages
+   - [ ] Implement breadcrumbs with structured data
+   - [ ] Create neighborhood landing pages
+   - [ ] Add FAQ section with structured data
+
+3. **Social Media Integration**
+   - [ ] Add social sharing buttons
+   - [ ] Enhance Open Graph tags with listing images
+   - [ ] Create Twitter Cards for listings
+
 ## Future Considerations
 - [ ] Mobile app version
 - [ ] Housing assistance program integration
@@ -83,4 +125,26 @@
 - [ ] Real-time notifications for new listings
 - [ ] Housing counselor directory
 - [ ] Document preparation guides
-- [ ] Virtual tours integration 
+- [ ] Virtual tours integration
+
+### Advanced Analytics & SEO
+1. **Advanced Analytics**
+   - [ ] A/B testing integration
+   - [ ] Heat mapping tools
+   - [ ] User session recording
+   - [ ] Custom funnels analysis
+
+2. **Content Strategy**
+   - [ ] Blog section for housing resources
+   - [ ] Neighborhood guides
+   - [ ] Housing assistance information
+   - [ ] Market trends analysis
+
+3. **Technical SEO**
+   - [ ] Implement AMP pages
+   - [ ] Add progressive web app capabilities
+   - [ ] Create dynamic sitemaps
+   - [ ] Implement schema markup for:
+     - Local business
+     - Organization
+     - Housing listings 
