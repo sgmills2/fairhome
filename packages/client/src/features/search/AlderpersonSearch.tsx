@@ -2,17 +2,21 @@ import { Autocomplete } from '@mui/joy';
 import type { AlderpersonSearchProps, SearchOption } from '../../types/search';
 import alderpersonData from '../../data/alderpersons.json';
 
-const ALDERPERSONS: SearchOption[] = alderpersonData.map(alder => ({
-  label: `${alder.name} - ${alder.ward}${getOrdinal(Number(alder.ward))} Ward`,
-  value: alder.ward,
-  details: {
-    name: alder.name,
-    ward: alder.ward,
-    address: alder.address,
-    phone: alder.phone,
-    website: alder.website
-  }
-}));
+const ALDERPERSONS: SearchOption[] = alderpersonData.map(alder => {
+  // Extract just the name part after the ward prefix
+  const name = alder.name.split(' - ')[1];
+  return {
+    label: `${alder.ward}${getOrdinal(Number(alder.ward))} Ward - ${name}`,
+    value: alder.ward,
+    details: {
+      name: alder.name,
+      ward: alder.ward,
+      address: alder.address,
+      phone: alder.phone,
+      website: alder.website
+    }
+  };
+});
 
 function getOrdinal(n: number): string {
   const s = ['th', 'st', 'nd', 'rd'];
@@ -31,7 +35,7 @@ function AlderpersonSearch({
 
   return (
     <Autocomplete
-      placeholder="Search by Alderperson"
+      placeholder="Search by Ward and Alderperson"
       options={ALDERPERSONS}
       value={selectedOption}
       sx={{ 
