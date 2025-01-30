@@ -6,7 +6,7 @@ const ALDERPERSONS: SearchOption[] = alderpersonData.map(alder => {
   // Extract just the name part after the ward prefix
   const name = alder.name.split(' - ')[1];
   return {
-    label: `${alder.ward}${getOrdinal(Number(alder.ward))} Ward - ${name}`,
+    label: `${alder.ward}${getOrdinal(Number(alder.ward))} Ward – ${name}`,
     value: alder.ward,
     details: {
       name: alder.name,
