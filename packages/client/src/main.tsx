@@ -46,7 +46,7 @@ class AppErrorBoundary extends React.Component<{children: React.ReactNode}, {has
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter basename={import.meta.env.DEV ? '' : '/fairhome'}>
+    <BrowserRouter basename="/">
       <React.Suspense fallback={<div>Loading...</div>}>
         <AppErrorBoundary>
           <App />

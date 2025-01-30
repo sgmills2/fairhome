@@ -30,6 +30,11 @@ jobs:
           yarn build
         env:
           VITE_MAPBOX_TOKEN: ${{ secrets.VITE_MAPBOX_TOKEN }}
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+      - name: Configure Custom Domain
+        run: echo "afairhome.org" > packages/client/dist/CNAME
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
