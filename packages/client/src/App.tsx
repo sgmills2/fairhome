@@ -1,20 +1,29 @@
 import { CssVarsProvider } from '@mui/joy/styles';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { HashRouter } from 'react-router-dom';
 import Layout from './components/Layout';
 import Routes from './Routes';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 2,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      cacheTime: 30 * 60 * 1000, // 30 minutes
+      onError: (error) => {
+        console.error('Query error:', error);
+      }
+    }
+  }
+});
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <CssVarsProvider>
-        <HashRouter>
-          <Layout>
-            <Routes />
-          </Layout>
-        </HashRouter>
+        <Layout>
+          <Routes />
+        </Layout>
       </CssVarsProvider>
     </QueryClientProvider>
   );

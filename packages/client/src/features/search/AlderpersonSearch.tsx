@@ -1,38 +1,43 @@
 import { Autocomplete } from '@mui/joy';
 import type { AlderpersonSearchProps, SearchOption } from '../../types/search';
+import alderpersonData from '../../data/alderpersons.json';
 
-// Placeholder data - to be replaced with real data later
-const PLACEHOLDER_ALDERPERSONS: SearchOption[] = [
-  "Pat Dowell - 3rd Ward",
-  "Sophia King - 4th Ward",
-  "Leslie Hairston - 5th Ward",
-  "Roderick Sawyer - 6th Ward",
-  "Gregory Mitchell - 7th Ward",
-  "Michelle Harris - 8th Ward",
-  "Anthony Beale - 9th Ward",
-  "Susan Sadlowski Garza - 10th Ward"
-].map(name => ({
-  label: name,
-  value: name
+const ALDERPERSONS: SearchOption[] = alderpersonData.map(alder => ({
+  label: `${alder.name} - ${alder.ward}${getOrdinal(Number(alder.ward))} Ward`,
+  value: alder.ward,
+  details: {
+    name: alder.name,
+    ward: alder.ward,
+    address: alder.address,
+    phone: alder.phone,
+    website: alder.website
+  }
 }));
+
+function getOrdinal(n: number): string {
+  const s = ['th', 'st', 'nd', 'rd'];
+  const v = n % 100;
+  return s[(v - 20) % 10] || s[v] || s[0];
+}
 
 function AlderpersonSearch({ 
   onAlderpersonSelect,
-  selectedAlderperson 
+  selectedAlderperson,
+  onLocationSelect
 }: AlderpersonSearchProps) {
   const selectedOption = selectedAlderperson
-    ? PLACEHOLDER_ALDERPERSONS.find(opt => opt.value === selectedAlderperson)
+    ? ALDERPERSONS.find(opt => opt.value === selectedAlderperson)
     : null;
 
   return (
     <Autocomplete
-      placeholder="Search by Alder"
-      options={PLACEHOLDER_ALDERPERSONS}
+      placeholder="Search by Alderperson"
+      options={ALDERPERSONS}
       value={selectedOption}
       sx={{ 
         width: { md: '320px', lg: '360px' }
       }}
-      onChange={(_, value) => onAlderpersonSelect(value ? value.value : null)}
+      onChange={(_, value) => onAlderpersonSelect(value ? value.value : null, onLocationSelect)}
       getOptionLabel={(option) => option.label}
     />
   );

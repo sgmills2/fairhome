@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { findNeighborhood, getNeighborhoodCenter } from '../../../data/chicago-neighborhoods';
+import { findWard, getWardCenter } from '../../../data/chicago-wards';
 
 interface SearchLocation {
   latitude: number;
@@ -25,9 +26,19 @@ export function useSearch() {
     }
   }, []);
 
-  const handleAlderpersonSelect = useCallback((alderperson: string | null) => {
-    setSelectedAlderperson(alderperson);
-    // Future: Add ward boundary highlighting and centering
+  const handleAlderpersonSelect = useCallback((wardNumber: string | null, onLocationSelect: (location: SearchLocation) => void) => {
+    setSelectedAlderperson(wardNumber);
+    
+    if (wardNumber) {
+      const found = findWard(wardNumber);
+      if (found) {
+        const [centerLng, centerLat] = getWardCenter(found);
+        onLocationSelect({
+          latitude: centerLat,
+          longitude: centerLng
+        });
+      }
+    }
   }, []);
 
   return {
