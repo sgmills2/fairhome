@@ -33,21 +33,6 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
     () => fetchGeoData('wards')
   );
 
-  // Show loading state while geo data loads
-  if (loadingNeighborhoods || loadingWards) {
-    return (
-      <div style={{ 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center' 
-      }}>
-        <CircularProgress />
-      </div>
-    );
-  }
-
   // Calculate cluster radius based on zoom
   const clusterRadius = useMemo(() => {
     if (zoom >= 16) return 30;      // Very close
@@ -149,6 +134,21 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
   const handleDragEnd = () => {
     setIsDragging(false);
   };
+
+  // Show loading state while geo data loads
+  if (loadingNeighborhoods || loadingWards) {
+    return (
+      <div style={{ 
+        width: '100%', 
+        height: '100%', 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+      }}>
+        <CircularProgress />
+      </div>
+    );
+  }
 
   return (
     <Map
