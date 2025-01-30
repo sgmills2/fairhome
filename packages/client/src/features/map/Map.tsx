@@ -9,6 +9,7 @@ import { fetchGeoData } from '../../services/geo';
 import type { MapViewProps } from '../../types/map';
 import { formatPrice, formatBedBath, formatArea, formatAddress } from '../../utils/formatting';
 import { useQuery } from 'react-query';
+import { LoadingState } from '../../components/LoadingState';
 
 const MapView = forwardRef<MapRef, MapViewProps>(({ 
   listings = [], 
@@ -23,14 +24,26 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
   const [isDragging, setIsDragging] = useState(false);
 
   // Fetch geo data
-  const { data: neighborhoods, isLoading: loadingNeighborhoods } = useQuery(
+  const { data: neighborhoods, isLoading: loadingNeighborhoods, error: neighborhoodsError } = useQuery(
     'neighborhoods',
-    () => fetchGeoData('neighborhoods')
+    () => fetchGeoData('neighborhoods'),
+    {
+      retry: 3,
+      onError: (error) => {
+        console.error('Error fetching neighborhoods:', error);
+      }
+    }
   );
 
-  const { data: wards, isLoading: loadingWards } = useQuery(
+  const { data: wards, isLoading: loadingWards, error: wardsError } = useQuery(
     'wards',
-    () => fetchGeoData('wards')
+    () => fetchGeoData('wards'),
+    {
+      retry: 3,
+      onError: (error) => {
+        console.error('Error fetching wards:', error);
+      }
+    }
   );
 
   // Calculate cluster radius based on zoom
@@ -58,22 +71,25 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
   };
 
   // Convert listings to GeoJSON for clustering
-  const geojsonListings: FeatureCollection<Point> = useMemo(() => ({
-    type: 'FeatureCollection',
-    features: listings.map((listing): Feature<Point> => ({
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: [listing.longitude, listing.latitude]
-      },
-      properties: {
-        id: listing.id,
-        title: listing.title,
-        price: listing.price,
-        bedrooms: listing.bedrooms
-      }
-    }))
-  }), [listings]);
+  const geojsonListings: FeatureCollection<Point> = useMemo(() => {
+    console.log('Converting listings to GeoJSON:', listings.length, 'listings');
+    return {
+      type: 'FeatureCollection',
+      features: listings.map((listing): Feature<Point> => ({
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [listing.longitude, listing.latitude]
+        },
+        properties: {
+          id: listing.id,
+          title: listing.title,
+          price: listing.price ? `$${listing.price.toLocaleString()}` : 'N/A',
+          bedrooms: listing.bedrooms
+        }
+      }))
+    };
+  }, [listings]);
 
   useEffect(() => {
     if (selectedListing && ref && 'current' in ref && ref.current) {
@@ -137,15 +153,30 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
 
   // Show loading state while geo data loads
   if (loadingNeighborhoods || loadingWards) {
+    return <LoadingState message="Loading map data..." />;
+  }
+
+  // Show error state if there's an error
+  if (neighborhoodsError || wardsError) {
+    const error = neighborhoodsError || wardsError;
     return (
       <div style={{ 
         width: '100%', 
         height: '100%', 
         display: 'flex', 
         justifyContent: 'center', 
-        alignItems: 'center' 
+        alignItems: 'center',
+        padding: '1rem',
+        color: 'red' 
       }}>
-        <CircularProgress />
+        <Typography>
+          Error loading map data. Please try refreshing the page.
+          {import.meta.env.DEV && error instanceof Error && (
+            <pre style={{ fontSize: '0.8em' }}>
+              {error.message}
+            </pre>
+          )}
+        </Typography>
       </div>
     );
   }
@@ -228,6 +259,7 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
         clusterMaxZoom={14}
         clusterRadius={clusterRadius}
       >
+        {/* Clustered points */}
         <Layer
           id="clusters"
           type="circle"
@@ -260,6 +292,7 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
           }}
         />
 
+        {/* Cluster count */}
         <Layer
           id="cluster-count"
           type="symbol"
@@ -274,15 +307,32 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
           }}
         />
 
+        {/* Individual points */}
         <Layer
           id="unclustered-point"
           type="circle"
           filter={['!', ['has', 'point_count']]}
           paint={{
-            'circle-color': '#74C2E1',  // Chicago flag light blue
-            'circle-radius': 12,
+            'circle-color': '#C3272B',
+            'circle-radius': 8,
             'circle-stroke-width': 2,
             'circle-stroke-color': '#fff'
+          }}
+        />
+
+        {/* Point labels */}
+        <Layer
+          id="unclustered-point-label"
+          type="symbol"
+          filter={['!', ['has', 'point_count']]}
+          layout={{
+            'text-field': ['get', 'price'],
+            'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+            'text-size': 11,
+            'text-offset': [0, -1.5]
+          }}
+          paint={{
+            'text-color': '#ffffff'
           }}
         />
       </Source>

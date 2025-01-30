@@ -30,11 +30,21 @@ async function uploadGeoData() {
     const wardsPath = path.join(__dirname, '../src/data/chicago-wards.json');
 
     console.log('Reading GeoJSON files...');
+    console.log('Neighborhoods path:', neighborhoodsPath);
+    console.log('Wards path:', wardsPath);
+
+    if (!fs.existsSync(neighborhoodsPath)) {
+      throw new Error(`Neighborhoods file not found at: ${neighborhoodsPath}`);
+    }
+    if (!fs.existsSync(wardsPath)) {
+      throw new Error(`Wards file not found at: ${wardsPath}`);
+    }
+
     const neighborhoods = JSON.parse(fs.readFileSync(neighborhoodsPath, 'utf8'));
     const wards = JSON.parse(fs.readFileSync(wardsPath, 'utf8'));
 
     console.log('Uploading neighborhoods data...');
-    const { error: neighborhoodsError } = await supabase
+    const { data: neighborhoodsData, error: neighborhoodsError } = await supabase
       .from('geo_data')
       .upsert({
         id: 'neighborhoods',
@@ -48,9 +58,10 @@ async function uploadGeoData() {
       console.error('Error uploading neighborhoods:', neighborhoodsError);
       throw neighborhoodsError;
     }
+    console.log('Successfully uploaded neighborhoods data');
 
     console.log('Uploading wards data...');
-    const { error: wardsError } = await supabase
+    const { data: wardsData, error: wardsError } = await supabase
       .from('geo_data')
       .upsert({
         id: 'wards',
@@ -63,6 +74,19 @@ async function uploadGeoData() {
     if (wardsError) {
       console.error('Error uploading wards:', wardsError);
       throw wardsError;
+    }
+    console.log('Successfully uploaded wards data');
+
+    // Verify the uploads
+    const { data: verifyData, error: verifyError } = await supabase
+      .from('geo_data')
+      .select('name, id')
+      .order('name');
+
+    if (verifyError) {
+      console.error('Error verifying data:', verifyError);
+    } else {
+      console.log('Current geo_data table contents:', verifyData);
     }
 
     console.log('Successfully uploaded all geo data!');
