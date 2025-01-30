@@ -86,6 +86,15 @@
   - [ ] Update API endpoints and functions
   - [ ] Update RLS policies for new schema
 
+### Infrastructure & SEO
+- [ ] Migrate from GitHub Pages to SSR solution
+  - [ ] Research SSR frameworks (Next.js, Remix)
+  - [ ] Implement server-side rendering for better SEO
+  - [ ] Set up proper staging/production environments
+  - [ ] Configure automated deployments
+  - [ ] Implement proper build caching
+  - [ ] Set up monitoring and analytics
+
 ## Future Considerations
 - [ ] Mobile app version
 - [ ] Housing assistance program integration
