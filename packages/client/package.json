@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx",
-    "fetch-neighborhoods": "ts-node scripts/fetch-neighborhood-data.ts"
+    "fetch-neighborhoods": "node --loader ts-node/esm scripts/fetch-neighborhood-data.ts",
+    "fetch-alderpersons": "node --loader ts-node/esm scripts/fetch-alderperson-data.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
@@ -33,6 +34,7 @@
     "node-fetch": "2",
     "supabase": "^2.0.0",
     "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "vite": "^6.0.3"
   },

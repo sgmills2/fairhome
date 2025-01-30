@@ -6,6 +6,7 @@ import { Typography, Card } from '@mui/joy';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { config } from '../../config';
 import { chicagoNeighborhoods } from '../../data/chicago-neighborhoods';
+import { chicagoWards } from '../../data/chicago-wards';
 import type { MapViewProps } from '../../types/map';
 import { formatPrice, formatBedBath, formatArea, formatAddress } from '../../utils/formatting';
 
@@ -14,7 +15,8 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
   selectedListing, 
   onListingClick,
   onViewportChange,
-  selectedNeighborhood 
+  selectedNeighborhood,
+  selectedWard
 }, ref) => {
   const [zoom, setZoom] = useState(11);
   const [isHovering, setIsHovering] = useState(false);
@@ -144,6 +146,29 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
+      {/* Ward boundaries layer */}
+      <Source id="wards" type="geojson" data={chicagoWards}>
+        <Layer
+          id="ward-fills"
+          type="fill"
+          paint={{
+            'fill-color': [
+              'case',
+              ['==', ['get', 'ward'], selectedWard || ''],
+              'rgba(0, 159, 227, 0.2)',  // Darker Chicago flag blue with transparency
+              'rgba(0, 0, 0, 0)'  // transparent
+            ],
+            'fill-outline-color': [
+              'case',
+              ['==', ['get', 'ward'], selectedWard || ''],
+              '#009FE3',  // Darker Chicago flag blue
+              'rgba(0, 0, 0, 0.1)'
+            ]
+          }}
+        />
+      </Source>
+
+      {/* Neighborhood boundaries layer */}
       <Source id="neighborhoods" type="geojson" data={chicagoNeighborhoods}>
         <Layer
           id="neighborhood-fills"

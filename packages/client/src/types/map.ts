@@ -21,4 +21,5 @@ export interface MapViewProps {
   onListingClick: (listing: any | null) => void;
   onViewportChange?: (bounds: [[number, number], [number, number]], zoom: number) => void;
   selectedNeighborhood?: string | null;
+  selectedWard?: string | null;
 } 

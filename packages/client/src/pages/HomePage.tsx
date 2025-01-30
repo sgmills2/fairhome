@@ -83,6 +83,7 @@ function HomePage() {
           onListingClick={setSelectedListing}
           onViewportChange={handleViewportChange}
           selectedNeighborhood={selectedNeighborhood}
+          selectedWard={selectedAlderperson}
         />
       </Box>
 
@@ -135,6 +136,7 @@ function HomePage() {
                 <AlderpersonSearch
                   onAlderpersonSelect={handleAlderpersonSelect}
                   selectedAlderperson={selectedAlderperson}
+                  onLocationSelect={handleLocationSelect}
                 />
               </Box>
             </Box>

@@ -1,0 +1,410 @@
+[
+  {
+    "ward": "1",
+    "name": "1st Ward - La Spata, Daniel",
+    "address": "1958 North Milwaukee Avenue",
+    "phone": "(872) 206-2685",
+    "website": {
+      "url": "https://www.the1stward.com/"
+    }
+  },
+  {
+    "ward": "2",
+    "name": "2nd Ward - Hopkins, Brian",
+    "address": "121 North LaSalle Street, Room 300",
+    "phone": "(312) 744-6836 / 9867/6213",
+    "website": {
+      "url": "https://www.aldermanhopkins.com/"
+    }
+  },
+  {
+    "ward": "3",
+    "name": "3rd Ward - Dowell, Pat",
+    "address": "5046 South State Street",
+    "phone": "(773) 373-9273",
+    "website": {
+      "url": "http://www.ward03chicago.com"
+    }
+  },
+  {
+    "ward": "4",
+    "name": "4th Ward - Robinson, Lamont J.",
+    "address": "928 East 43rd Street",
+    "phone": "(312)744-2690",
+    "website": null
+  },
+  {
+    "ward": "5",
+    "name": "5th Ward - Yancy, Desmon C.",
+    "address": "2230 East 71st Street",
+    "phone": "(312) 744-6832",
+    "website": null
+  },
+  {
+    "ward": "6",
+    "name": "6th Ward - Hall, William E.",
+    "address": "8541 South State Street",
+    "phone": "(773) 241-3100",
+    "website": null
+  },
+  {
+    "ward": "7",
+    "name": "7th Ward - Mitchell, Gregory I.",
+    "address": "2249 East 95th Street",
+    "phone": "(773) 731-7777",
+    "website": {
+      "url": "http://www.gregmitchell7thward.org/"
+    }
+  },
+  {
+    "ward": "8",
+    "name": "8th Ward - Harris, Michelle A.",
+    "address": "8539 South Cottage Grove Avenue",
+    "phone": "(773) 874-3300",
+    "website": {
+      "url": "http://www.Aldermanmichelleharris.net"
+    }
+  },
+  {
+    "ward": "9",
+    "name": "9th Ward - Beale, Anthony",
+    "address": "34 East 112th Place",
+    "phone": "(773) 785-1100",
+    "website": {
+      "url": "http://www.Ward09.com"
+    }
+  },
+  {
+    "ward": "10",
+    "name": "10th Ward - Chico, Peter",
+    "address": "10500 South Ewing Avenue",
+    "phone": "(773) 768-8138",
+    "website": null
+  },
+  {
+    "ward": "11",
+    "name": "11th Ward - Lee, Nicole T.",
+    "address": "3659 South Halsted Street",
+    "phone": "(773) 254-6677",
+    "website": null
+  },
+  {
+    "ward": "12",
+    "name": "12th Ward - Ramirez, Julia M.",
+    "address": "3868 South Archer Avenue",
+    "phone": "(773) 475-6783",
+    "website": null
+  },
+  {
+    "ward": "13",
+    "name": "13th Ward - Quinn, Marty",
+    "address": "6500 South Pulaski Road",
+    "phone": "(773) 581-8000",
+    "website": null
+  },
+  {
+    "ward": "14",
+    "name": "14th Ward - Gutierrez, Jeylu B.",
+    "address": "3124 West 59th Street",
+    "phone": "773-236-0117",
+    "website": null
+  },
+  {
+    "ward": "15",
+    "name": "15th Ward - Lopez, Raymond A.",
+    "address": "2650 West 51st Street",
+    "phone": "(773) 823-1539",
+    "website": {
+      "url": "http://www.the15thward.org"
+    }
+  },
+  {
+    "ward": "16",
+    "name": "16th Ward - Coleman, Stephanie D.",
+    "address": "1137 West 63rd Street, Unit C",
+    "phone": "(773) 306-1981",
+    "website": {
+      "url": "https://www.16thward.org"
+    }
+  },
+  {
+    "ward": "17",
+    "name": "17th Ward - Moore, David H.",
+    "address": "1344 West 79th Street",
+    "phone": "(773) 783-3672",
+    "website": {
+      "url": "http://www.David.Moore@cityofchicago.org"
+    }
+  },
+  {
+    "ward": "18",
+    "name": "18th Ward - Curtis, Derrick G.",
+    "address": "8359 South Pulaski Road",
+    "phone": "(773) 284-5057",
+    "website": null
+  },
+  {
+    "ward": "19",
+    "name": "19th Ward - O'shea, Matthew J.",
+    "address": "10400 South Western Avenue",
+    "phone": "(773) 238-8766",
+    "website": {
+      "url": "http://the19thward.com/"
+    }
+  },
+  {
+    "ward": "20",
+    "name": "20th Ward - Taylor, Jeanette B.",
+    "address": "5707 South Wentworth Avenue",
+    "phone": "(773) 966-5336",
+    "website": null
+  },
+  {
+    "ward": "21",
+    "name": "21st Ward - Mosley, Ronnie L.",
+    "address": "10805 South Halsted Street",
+    "phone": "(773) 881-9300",
+    "website": null
+  },
+  {
+    "ward": "22",
+    "name": "22nd Ward - Rodriguez, Michael D.",
+    "address": "2500 South St. Louis Avenue",
+    "phone": "(773) 762-1771",
+    "website": null
+  },
+  {
+    "ward": "23",
+    "name": "23rd Ward - Tabares, Silvana",
+    "address": "6247 South Archer Avenue",
+    "phone": "(773) 582-4444",
+    "website": null
+  },
+  {
+    "ward": "24",
+    "name": "24th Ward - Scott, Monique L.",
+    "address": "1158 South Keeler Street",
+    "phone": "(773) 533-2400",
+    "website": null
+  },
+  {
+    "ward": "25",
+    "name": "25th Ward - Sigcho-lopez, Byron",
+    "address": "2100 West Cermak Road",
+    "phone": "(773) 523-4100",
+    "website": {
+      "url": "https://www.25thward.org"
+    }
+  },
+  {
+    "ward": "26",
+    "name": "26th Ward - Fuentes, Jessica L.",
+    "address": "2511 West Division Street",
+    "phone": "(773) 395-0143",
+    "website": null
+  },
+  {
+    "ward": "27",
+    "name": "27th Ward - Burnett, Jr., Walter",
+    "address": "4 North Western Avenue, Unit 1C",
+    "phone": "(312) 432-1995",
+    "website": {
+      "url": "http://aldermanburnett.com/"
+    }
+  },
+  {
+    "ward": "28",
+    "name": "28th Ward - Ervin, Jason C.",
+    "address": "2622 West Jackson Boulevard, Suite 200A",
+    "phone": "(773) 533-0900",
+    "website": {
+      "url": "http://www.AldermanErvin.com/"
+    }
+  },
+  {
+    "ward": "29",
+    "name": "29th Ward - Taliaferro, Chris",
+    "address": "6272 West North Avenue",
+    "phone": "(773) 237-6460",
+    "website": {
+      "url": "http://www.aldtaliaferro.com"
+    }
+  },
+  {
+    "ward": "30",
+    "name": "30th Ward - Cruz, Ruth",
+    "address": "5418 W. Belmont Ave",
+    "phone": "(773) 628-7874",
+    "website": null
+  },
+  {
+    "ward": "31",
+    "name": "31st Ward - Cardona, Jr., Felix",
+    "address": "4606 West Diversey Avenue",
+    "phone": "(773) 824-2000",
+    "website": {
+      "url": "https://www.felix31.org"
+    }
+  },
+  {
+    "ward": "32",
+    "name": "32nd Ward - Waguespack, Scott",
+    "address": "2657 North Clybourn Avenue",
+    "phone": "(773) 248-1330",
+    "website": {
+      "url": "http://www.ward32.org"
+    }
+  },
+  {
+    "ward": "33",
+    "name": "33rd Ward - Rodriguez Sanchez, Rossana",
+    "address": "4747 North Sawyer Avenue",
+    "phone": "(773) 840-7880",
+    "website": null
+  },
+  {
+    "ward": "34",
+    "name": "34th Ward - Conway, William",
+    "address": "121 North LaSalle Street, Room 300",
+    "phone": "(312) 744-6820",
+    "website": null
+  },
+  {
+    "ward": "35",
+    "name": "35th Ward - Ramirez-rosa, Carlos",
+    "address": "2934 North Milwaukee Avenue, Unit C",
+    "phone": "(773) 887-3772",
+    "website": {
+      "url": "http://www.aldermancarlosrosa.org"
+    }
+  },
+  {
+    "ward": "36",
+    "name": "36th Ward - Villegas, Gilbert",
+    "address": "6560 West Fullerton Avenue, Unit C118, Suite A; 2246 West Chicago Avenue",
+    "phone": "(773) 745-4636",
+    "website": {
+      "url": "http://www.36thward.org"
+    }
+  },
+  {
+    "ward": "37",
+    "name": "37th Ward - Mitts, Emma",
+    "address": "4924 West Chicago Avenue",
+    "phone": "(773) 379-0960",
+    "website": {
+      "url": "https://www.cityofchicago.org/city/en/about/wards/37.html"
+    }
+  },
+  {
+    "ward": "38",
+    "name": "38th Ward - Sposato, Nicholas",
+    "address": "3821 North Harlem Avenue",
+    "phone": "(773) 283-3838",
+    "website": {
+      "url": "http://aldermansposato.com/"
+    }
+  },
+  {
+    "ward": "39",
+    "name": "39th Ward - Nugent, Samantha",
+    "address": "4200 West Lawrence Avenue",
+    "phone": "(773) 736-5594",
+    "website": {
+      "url": "http://www.ward39@cityofchicago.org"
+    }
+  },
+  {
+    "ward": "40",
+    "name": "40th Ward - Vasquez, Jr., Andre",
+    "address": "5620 North Western Avenue",
+    "phone": "(773) 654-1867",
+    "website": {
+      "url": "http://www.40thward.org"
+    }
+  },
+  {
+    "ward": "41",
+    "name": "41st Ward - Napolitano, Anthony V.",
+    "address": "7231 West Touhy Avenue",
+    "phone": "(773) 631-2241",
+    "website": {
+      "url": "http://www.chicago41.com"
+    }
+  },
+  {
+    "ward": "42",
+    "name": "42nd Ward - Reilly, Brendan",
+    "address": "121 North LaSalle Street, Room 200, Office 6",
+    "phone": "(312) 642-4242",
+    "website": null
+  },
+  {
+    "ward": "43",
+    "name": "43rd Ward - Knudsen, Timothy R.",
+    "address": "2523 North Halsted Street",
+    "phone": "(773) 348-9500",
+    "website": {
+      "url": "https://ward43.org"
+    }
+  },
+  {
+    "ward": "44",
+    "name": "44th Ward - Lawson, Bennett R.",
+    "address": "3223 North Sheffield Avenue, Suite A",
+    "phone": "(773) 525-6034",
+    "website": null
+  },
+  {
+    "ward": "45",
+    "name": "45th Ward - Gardiner, James M.",
+    "address": "6020 West Higgins Ave STE C,",
+    "phone": "(773) 853-0799",
+    "website": {
+      "url": "http://www.aldermangardiner.com"
+    }
+  },
+  {
+    "ward": "46",
+    "name": "46th Ward - Clay, Angela",
+    "address": "4544 North Broadway",
+    "phone": "(312) 744-6831",
+    "website": null
+  },
+  {
+    "ward": "47",
+    "name": "47th Ward - Martin, Matthew J.",
+    "address": "4243 North Lincoln Avenue",
+    "phone": "(773) 868-4747",
+    "website": {
+      "url": "http://www.aldermanmartin.com"
+    }
+  },
+  {
+    "ward": "48",
+    "name": "48th Ward - Manaa-hoppenworth, Leni",
+    "address": "1129  West Bryn Mawr Avenue",
+    "phone": "(773) 784-5277",
+    "website": {
+      "url": "https://www.the48thward.org/"
+    }
+  },
+  {
+    "ward": "49",
+    "name": "49th Ward - Hadden, Maria E.",
+    "address": "1447 West Morse Avenue",
+    "phone": "(773) 338-5796",
+    "website": {
+      "url": "http://www.49thward.org"
+    }
+  },
+  {
+    "ward": "50",
+    "name": "50th Ward - Silverstein, Debra L.",
+    "address": "2949 West Devon Avenue",
+    "phone": "(773) 262-1050",
+    "website": {
+      "url": "http://50thwardchicago.com"
+    }
+  }
+]
