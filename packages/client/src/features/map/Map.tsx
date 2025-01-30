@@ -2,13 +2,13 @@ import { useEffect, useMemo, useState, forwardRef } from 'react';
 import Map, { Popup, Source, Layer, ViewStateChangeEvent, MapLayerMouseEvent } from 'react-map-gl';
 import type { MapRef } from 'react-map-gl';
 import type { FeatureCollection, Feature, Point } from 'geojson';
-import { Typography, Card } from '@mui/joy';
+import { Typography, Card, CircularProgress } from '@mui/joy';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { config } from '../../config';
-import { chicagoNeighborhoods } from '../../data/chicago-neighborhoods';
-import { chicagoWards } from '../../data/chicago-wards';
+import { fetchGeoData } from '../../services/geo';
 import type { MapViewProps } from '../../types/map';
 import { formatPrice, formatBedBath, formatArea, formatAddress } from '../../utils/formatting';
+import { useQuery } from 'react-query';
 
 const MapView = forwardRef<MapRef, MapViewProps>(({ 
   listings = [], 
@@ -21,6 +21,32 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
   const [zoom, setZoom] = useState(11);
   const [isHovering, setIsHovering] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+
+  // Fetch geo data
+  const { data: neighborhoods, isLoading: loadingNeighborhoods } = useQuery(
+    'neighborhoods',
+    () => fetchGeoData('neighborhoods')
+  );
+
+  const { data: wards, isLoading: loadingWards } = useQuery(
+    'wards',
+    () => fetchGeoData('wards')
+  );
+
+  // Show loading state while geo data loads
+  if (loadingNeighborhoods || loadingWards) {
+    return (
+      <div style={{ 
+        width: '100%', 
+        height: '100%', 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+      }}>
+        <CircularProgress />
+      </div>
+    );
+  }
 
   // Calculate cluster radius based on zoom
   const clusterRadius = useMemo(() => {
@@ -147,48 +173,52 @@ const MapView = forwardRef<MapRef, MapViewProps>(({
       onDragEnd={handleDragEnd}
     >
       {/* Ward boundaries layer */}
-      <Source id="wards" type="geojson" data={chicagoWards}>
-        <Layer
-          id="ward-fills"
-          type="fill"
-          paint={{
-            'fill-color': [
-              'case',
-              ['==', ['get', 'ward'], selectedWard || ''],
-              'rgba(0, 159, 227, 0.2)',  // Darker Chicago flag blue with transparency
-              'rgba(0, 0, 0, 0)'  // transparent
-            ],
-            'fill-outline-color': [
-              'case',
-              ['==', ['get', 'ward'], selectedWard || ''],
-              '#009FE3',  // Darker Chicago flag blue
-              'rgba(0, 0, 0, 0.1)'
-            ]
-          }}
-        />
-      </Source>
+      {wards && (
+        <Source id="wards" type="geojson" data={wards}>
+          <Layer
+            id="ward-fills"
+            type="fill"
+            paint={{
+              'fill-color': [
+                'case',
+                ['==', ['get', 'ward'], selectedWard || ''],
+                'rgba(0, 159, 227, 0.2)',
+                'rgba(0, 0, 0, 0)'
+              ],
+              'fill-outline-color': [
+                'case',
+                ['==', ['get', 'ward'], selectedWard || ''],
+                '#009FE3',
+                'rgba(0, 0, 0, 0.1)'
+              ]
+            }}
+          />
+        </Source>
+      )}
 
       {/* Neighborhood boundaries layer */}
-      <Source id="neighborhoods" type="geojson" data={chicagoNeighborhoods}>
-        <Layer
-          id="neighborhood-fills"
-          type="fill"
-          paint={{
-            'fill-color': [
-              'case',
-              ['==', ['get', 'community'], selectedNeighborhood || ''],
-              'rgba(195, 39, 43, 0.2)',  // Chicago flag red with transparency
-              'rgba(0, 0, 0, 0)'  // transparent
-            ],
-            'fill-outline-color': [
-              'case',
-              ['==', ['get', 'community'], selectedNeighborhood || ''],
-              '#C3272B',  // Chicago flag red
-              'rgba(0, 0, 0, 0.1)'
-            ]
-          }}
-        />
-      </Source>
+      {neighborhoods && (
+        <Source id="neighborhoods" type="geojson" data={neighborhoods}>
+          <Layer
+            id="neighborhood-fills"
+            type="fill"
+            paint={{
+              'fill-color': [
+                'case',
+                ['==', ['get', 'community'], selectedNeighborhood || ''],
+                'rgba(195, 39, 43, 0.2)',
+                'rgba(0, 0, 0, 0)'
+              ],
+              'fill-outline-color': [
+                'case',
+                ['==', ['get', 'community'], selectedNeighborhood || ''],
+                '#C3272B',
+                'rgba(0, 0, 0, 0.1)'
+              ]
+            }}
+          />
+        </Source>
+      )}
 
       <Source
         id="listings"
