@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, forwardRef } from 'react';
 import Map, { Popup, Source, Layer, ViewStateChangeEvent, MapLayerMouseEvent } from 'react-map-gl';
 import type { MapRef } from 'react-map-gl';
 import type { FeatureCollection, Feature, Point } from 'geojson';
-import { Typography, Card, CircularProgress } from '@mui/joy';
+import { Typography, Card } from '@mui/joy';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { config } from '../../config';
 import { fetchGeoData } from '../../services/geo';

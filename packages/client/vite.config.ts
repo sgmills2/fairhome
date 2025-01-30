@@ -5,12 +5,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   return {
     plugins: [react()],
-<<<<<<< HEAD
-    base: '/',
-    publicDir: 'public',
-=======
     base: mode === 'production' ? '/fairhome/' : '/',
->>>>>>> staging
     define: {
       'import.meta.env.VITE_MAPBOX_TOKEN': JSON.stringify(env.VITE_MAPBOX_TOKEN),
       'import.meta.env.VITE_SUPABASE_URL': JSON.stringify(env.VITE_SUPABASE_URL),

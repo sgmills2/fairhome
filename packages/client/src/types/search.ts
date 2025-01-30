@@ -14,7 +14,9 @@ export interface AlderpersonData {
   name: string;
   address: string;
   phone: string;
-  website: string;
+  website: {
+    url: string;
+  } | null;
 }
 
 export interface AlderpersonSearchProps {
@@ -28,11 +30,13 @@ export interface AlderpersonDetails {
   ward: string;
   address: string;
   phone: string;
-  website: string;
+  website: {
+    url: string;
+  } | null;
 }
 
 export interface SearchOption {
   label: string;
   value: string;
-  details?: AlderpersonDetails;
+  details: AlderpersonDetails;
 } 
