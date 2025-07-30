@@ -133,7 +133,7 @@ RECOMMENDATIONS:
 5. Cross-reference with homeless services providers
 
 NOTE: This verification is important for the credibility of the 
-AFairHome.org cost-benefit analysis. The $20M estimate should be 
+AFairHome.org Cost-Impact analysis. The $20M estimate should be 
 confirmed through official city budget documents.
 """
         return report
@@ -200,7 +200,7 @@ if __name__ == "__main__":
 IMPORTANCE OF VERIFICATION:
 ===========================
 The $20 million estimate is a significant component that could add substantial 
-value to the AFairHome.org cost-benefit analysis. However, for credibility:
+value to the AFairHome.org Cost-Impact analysis. However, for credibility:
 
 1. The estimate should be verified against official city budget documents
 2. If verified, it could be added as an additional quantified benefit

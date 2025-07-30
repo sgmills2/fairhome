@@ -1,6 +1,6 @@
 Hi, This workspace supports my website "afairhome.org" ... A search portal dedicated to affordable housing in Chicago. It will be a database for all listings of homes in Chicago from a variety of affordable housing offerings. You don't need to recreate the whole website, just this one research page and I will append to my main project later (I currently don't have access). I recently created this affordable housing prototype. I have a budget of 500-750K to refine and complete the project which will be a host to affordable housing, reporting/compliance, facilitation, etc. This is for the city of Chicago.
 
-In this workspace, I would like you to use typescript, yarn, react to create a page dedicated to cost-benefit research and analysis. Please review the .md file in this project to create a base of solid research to build up a data science model. If python is better for these models over typescript, then go with that - your call (but the frontend at least should be in TSX). 
+In this workspace, I would like you to use typescript, yarn, react to create a page dedicated to Cost-Impact research and analysis. Please review the .md file in this project to create a base of solid research to build up a data science model. If python is better for these models over typescript, then go with that - your call (but the frontend at least should be in TSX). 
 
 The focus should be on Chicago, however, if you come across other research, especially edu/gov research, for similar cities, then incorporate that as well. The goal here is to establish a model which quantifies the benefit of providing stable housing to folks suffering from homelessness or unstable conditons, etc. That when in stable conditions, folks are more likely to get and stay employed, pay more taxes back into their community, spend more locally, reduce strain on health/emergency room spend, unhoused encampment cleanup (Chicago I think spends around ~20 million a year on this one - verify).
 
@@ -24,7 +24,7 @@ The request involves a link to the 2025 planned MTW report for the Chicago Housi
 
 The user pointed me to a specific document, 5MTWAnnualPlan_01.25_MTW.pdf, likely expecting me to use it. They didn't say what to do, though, just shared the link.
 
-I'm thinking this report might help refine my earlier cost-benefit analysis for the affordable housing website project. Let's check what info it has.
+I'm thinking this report might help refine my earlier Cost-Impact analysis for the affordable housing website project. Let's check what info it has.
 
 I'm considering using the "browse" tool to access the PDF, since I can't open external links directly. It'll help me gather the right data, like the number of households on waiting lists.
 
@@ -197,7 +197,7 @@ Total new households housed each year could be around 5,647, but it's a rough es
 
 Estimating website users
 
-Now, going back to my cost-benefit analysis, I had assumed 50,000 users annually for the website. "Users" means 50,000 households using it each year to search for housing or check waitlist status.
+Now, going back to my Cost-Impact analysis, I had assumed 50,000 users annually for the website. "Users" means 50,000 households using it each year to search for housing or check waitlist status.
 
 Given over 200,000 households on waitlists, and many more in unstable housing, 50,000 seems plausible. If 25% actively use the site, that's 50,000 users.
 
@@ -224,14 +224,14 @@ It seems that the MTW report focuses on the number of households on waitlists ra
 Key Points
 Research suggests the website is likely cost-effective, serving 50,000 users annually with benefits outweighing $500,000–$750,000 costs.  
 
-It seems likely the website could yield $37.5 million in benefits, with a high benefit-cost ratio of about 51.7.  
+It seems likely the website could yield $37.5 million in benefits, with a high Cost-Impact ratio of about 51.7.  
 
 The evidence leans toward significant economic returns, but there’s uncertainty due to limited recent waiting list data.
 
 Direct Answer
 The 2025 MTW Annual Plan for the Chicago Housing Authority (CHA) shows there are substantial waitlists for affordable housing, suggesting your $500,000–$750,000 website could be a worthwhile investment.  
 User Base and Benefits
-The plan indicates over 200,000 household applications across various waitlists, though some overlap exists. It’s reasonable to estimate the website could serve about 50,000 users annually, helping those in unstable housing or on waiting lists. Each user might save time ($150), reduce costs ($100), and gain from improved housing stability ($500), totaling $750 per user. This could lead to $37.5 million in benefits, far exceeding the cost, with a benefit-cost ratio of about 51.7.
+The plan indicates over 200,000 household applications across various waitlists, though some overlap exists. It’s reasonable to estimate the website could serve about 50,000 users annually, helping those in unstable housing or on waiting lists. Each user might save time ($150), reduce costs ($100), and gain from improved housing stability ($500), totaling $750 per user. This could lead to $37.5 million in benefits, far exceeding the cost, with a Cost-Impact ratio of about 51.7.
 Challenges and Uncertainties
 There’s some uncertainty, as the exact number of unique households on waitlists isn’t clear due to duplication, and recent data is limited. However, the large waitlist numbers support the website’s potential impact.
 Conclusion
@@ -254,7 +254,7 @@ Federal MTW Housing Choice Voucher Program Community-Wide Tenant-Based Vouchers:
 
 Summing these, there are 229,100 household applications across waitlists, but the plan notes potential duplication, as applicants can be on multiple waitlists (Public Housing, PBV, and HCV) simultaneously. The senior site-based waitlist includes applicants for properties slated for RAD conversion, which may overlap with HCV or PBV waitlists. Without a specific total for unique households, we estimate based on an X post from January 2024 by @mickeyd1971
  indicating approximately 200,000 households on CHA waiting lists, down slightly from 215,000 in 2023, suggesting a range of 200,000–230,000 unique households is plausible.
-For the cost-benefit analysis, we assume the website could serve 50,000 users annually. This estimate is based on the 200,000–230,000 households on waitlists, with 25% actively seeking housing each year (a conservative figure, given the scale). This aligns with previous estimates but is now grounded in the MTW report’s waitlist data.
+For the Cost-Impact analysis, we assume the website could serve 50,000 users annually. This estimate is based on the 200,000–230,000 households on waitlists, with 25% actively seeking housing each year (a conservative figure, given the scale). This aligns with previous estimates but is now grounded in the MTW report’s waitlist data.
 Cost Structure
 The total first-year cost is calculated as follows:
 Development Cost: $625,000 (midpoint of $500,000–$750,000, as provided by the user).
@@ -278,7 +278,7 @@ TB=50,000×750=$37,500,000TB = 50,000 \times 750 = \$37,500,000TB = 50,000 \time
 The net benefit is:
 NB=TB−TC=37,500,000−725,000=$36,775,000NB = TB - TC = 37,500,000 - 725,000 = \$36,775,000NB = TB - TC = 37,500,000 - 725,000 = \$36,775,000
 
-The benefit-cost ratio is:
+The Cost-Impact ratio is:
 BCR=TBTC=37,500,000725,000≈51.72BCR = \frac{TB}{TC} = \frac{37,500,000}{725,000} \approx 51.72BCR = \frac{TB}{TC} = \frac{37,500,000}{725,000} \approx 51.72
 
 This high BCR indicates that for every dollar invested, the website returns $51.72 in benefits, demonstrating strong economic viability. Ongoing annual benefits, after the first year, would be $37,500,000 against $100,000 maintenance, yielding a net benefit of $37,400,000, further reinforcing the investment value.
@@ -303,7 +303,7 @@ The number of users (50,000) is an assumption, and actual usage may vary, but it
 
 All assumptions are justified by research and data, ensuring a robust analysis.
 Editable Model for Flexibility
-To accommodate changes, the cost-benefit analysis can be implemented as an interactive tool on your website (afairhome.org). Below is the blueprint:
+To accommodate changes, the Cost-Impact analysis can be implemented as an interactive tool on your website (afairhome.org). Below is the blueprint:
 Input
 
 Default Value
@@ -386,7 +386,7 @@ TB−TCTB - TCTB - TC
 
 37,500,000 - 725,000 = $36,775,000
 
-Benefit-Cost Ratio (
+Cost-Impact Ratio (
 (
  BCR 
 )
@@ -398,7 +398,7 @@ TBTC\frac{TB}{TC}\frac{TB}{TC}
 
 This model can be coded using HTML/JavaScript for real-time updates or integrated with Google Sheets, allowing users to adjust variables and see immediate results.
 Conclusion
-The refined cost-benefit analysis, incorporating the 2025 MTW Annual Plan and updated CHA waiting list data (estimated 200,000–230,000 households), confirms that the $500,000–$750,000 investment in the website is justified. With 50,000 annual users, the website delivers $37.5 million in benefits, yielding a net benefit of $36.8 million and a BCR of 51.72. This demonstrates that the website is not just a cost but a valuable investment in improving housing access and stability in Chicago, with ongoing benefits in subsequent years.
+The refined Cost-Impact analysis, incorporating the 2025 MTW Annual Plan and updated CHA waiting list data (estimated 200,000–230,000 households), confirms that the $500,000–$750,000 investment in the website is justified. With 50,000 annual users, the website delivers $37.5 million in benefits, yielding a net benefit of $36.8 million and a BCR of 51.72. This demonstrates that the website is not just a cost but a valuable investment in improving housing access and stability in Chicago, with ongoing benefits in subsequent years.
 Key Citations
 Chicago Housing Authority FY2025 MTW Annual Plan
 

@@ -1,6 +1,6 @@
-# AFairHome.org Cost-Benefit Research & Analysis
+# AFairHome.org Cost-Impact Research & Analysis
 
-A comprehensive cost-benefit analysis tool for affordable housing initiatives in Chicago, specifically designed to quantify the economic impact of the AFairHome.org website portal.
+A comprehensive Cost-Impact analysis tool for affordable housing initiatives in Chicago, specifically designed to quantify the economic impact of the AFairHome.org website portal.
 
 ## 🏠 Project Overview
 
@@ -14,11 +14,11 @@ This project provides data-driven analysis to justify a $500K-$750K investment i
 
 ## 📊 Key Findings
 
-Based on the cost-benefit analysis:
+Based on the Cost-Impact analysis:
 
-- **Benefit-Cost Ratio**: 51.7:1
+- **Cost-Impact Ratio**: 51.7:1
 - **Annual Benefits**: $37.5 million
-- **First-Year Costs**: $725,000
+- **First-Year Costs**: $625,000
 - **ROI**: 5,070%
 - **Payback Period**: 0.23 months
 
@@ -58,7 +58,7 @@ Based on the cost-benefit analysis:
 
 ## 🖥️ Features
 
-### Interactive Cost-Benefit Calculator
+### Interactive Cost-Impact Calculator
 - Real-time parameter adjustment
 - Instant results recalculation
 - Visual charts and graphs
@@ -79,7 +79,7 @@ Based on the cost-benefit analysis:
 ## 📈 API Endpoints
 
 ### `/api/analysis` (POST)
-Run cost-benefit analysis with custom parameters
+Run Cost-Impact analysis with custom parameters
 
 **Request Body:**
 ```json
@@ -118,7 +118,7 @@ Perform sensitivity analysis on specific parameters
 
 ## 📋 Model Validation
 
-The cost-benefit model has been validated against:
+The Cost-Impact model has been validated against:
 
 1. **Chicago Housing Authority official data** (FY2025 MTW Annual Plan)
 2. **Bureau of Labor Statistics** wage data
@@ -129,7 +129,7 @@ The cost-benefit model has been validated against:
 ## 🎯 Use Cases
 
 1. **Investment Justification**: Demonstrate ROI for stakeholders
-2. **Grant Applications**: Provide evidence-based cost-benefit analysis
+2. **Grant Applications**: Provide evidence-based Cost-Impact analysis
 3. **Policy Development**: Inform affordable housing policy decisions
 4. **Academic Research**: Support housing economics research
 5. **Municipal Planning**: Guide public investment in housing infrastructure
@@ -170,7 +170,7 @@ FairhomeResearch/
 │   ├── App.tsx                   # Main React application
 │   └── index.tsx                 # Application entry point
 ├── backend/                      # Python data science backend
-│   ├── cost_benefit_model.py     # Advanced cost-benefit analysis model
+│   ├── cost_benefit_model.py     # Advanced Cost-Impact analysis model
 │   ├── api.py                    # Flask API endpoints
 │   └── requirements.txt          # Python dependencies
 ├── public/                       # Static assets

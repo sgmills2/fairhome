@@ -41,7 +41,7 @@ function Navbar() {
         startDecorator={<AnalyticsIcon />}
         sx={{ display: { xs: 'none', md: 'flex' } }}
       >
-        Research
+        Cost-Impact
       </Button>
     </Box>
   );

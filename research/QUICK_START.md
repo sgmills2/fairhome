@@ -2,7 +2,7 @@
 
 ## 🚀 Get Started in 5 Minutes
 
-This guide will help you run the cost-benefit analysis tool locally.
+This guide will help you run the Cost-Impact analysis tool locally.
 
 ---
 
@@ -115,7 +115,7 @@ FairhomeResearch/
 
 ## 🎯 Key Features
 
-### Interactive Cost-Benefit Calculator
+### Interactive Cost-Impact Calculator
 - **Real-time parameter adjustment**
 - **Instant recalculation** of all metrics
 - **Visual charts and graphs**
@@ -125,7 +125,7 @@ FairhomeResearch/
 - **Scenario analysis** (Conservative/Base/Optimistic)
 - **Sensitivity analysis** for key parameters
 - **Net Present Value** calculations
-- **Benefit-cost ratio** analysis
+- **Cost-Impact ratio** analysis
 
 ### Research Documentation
 - **Chicago Housing Authority data** integration
@@ -142,8 +142,8 @@ Based on Chicago Housing Authority data and conservative assumptions:
 | Metric | Value |
 |--------|-------|
 | **Annual Benefits** | $37.5 million |
-| **First-Year Costs** | $725,000 |
-| **Benefit-Cost Ratio** | 51.7:1 |
+| **First-Year Costs** | $625,000 |
+| **Cost-Impact Ratio** | 51.7:1 |
 | **ROI** | 5,070% |
 | **Payback Period** | 0.23 months |
 

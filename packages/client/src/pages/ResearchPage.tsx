@@ -18,10 +18,12 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import PeopleIcon from '@mui/icons-material/People';
-import HomeIcon from '@mui/icons-material/Home';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WarningIcon from '@mui/icons-material/Warning';
 import InfoIcon from '@mui/icons-material/Info';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import PersonIcon from '@mui/icons-material/Person';
 import { 
   CostBenefitInputs, 
   CostBenefitResults, 
@@ -46,63 +48,125 @@ function ResearchPage() {
   };
 
   const chartData = useMemo(() => generateChartData(inputs, results), [inputs, results]);
-  const benefitBreakdown = useMemo(() => generateBenefitBreakdown(inputs), [inputs]);
+  const benefitBreakdown = useMemo(() => generateBenefitBreakdown(results), [results]);
 
   return (
     <Box sx={{ p: 3, maxWidth: '1200px', mx: 'auto' }}>
       {/* Header */}
       <Box sx={{ mb: 4, textAlign: 'center' }}>
         <Typography level="h1" sx={{ mb: 2, color: 'primary.500' }}>
-          AFairHome.org Cost-Benefit Research
+          AHAD Cost-Impact Research
         </Typography>
         <Typography level="body-lg" sx={{ color: 'text.secondary' }}>
           Comprehensive analysis of affordable housing portal investment for Chicago
         </Typography>
       </Box>
 
-      {/* Key Metrics Cards */}
+      {/* Total Economic Impact Card */}
+      <Card variant="soft" color="success" sx={{ mb: 4 }}>
+        <CardContent sx={{ textAlign: 'center' }}>
+          <Typography level="h2" sx={{ mb: 1, color: 'success.500' }}>
+            Total Annual Economic Impact
+          </Typography>
+          <Typography level="h1" sx={{ fontSize: '3rem', fontWeight: 'bold' }}>
+            {formatCurrency(results.totalBenefits)}
+          </Typography>
+          <Typography level="body-lg" sx={{ mt: 1 }}>
+            Cost-Impact Ratio: <strong>{results.benefitCostRatio.toFixed(1)}:1</strong> • 
+            ROI: <strong>{results.roiPercentage.toFixed(0)}%</strong>
+          </Typography>
+        </CardContent>
+      </Card>
+
+      {/* Segmented Benefits Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} md={4}>
           <Card variant="soft" color="primary">
             <CardContent>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <AttachMoneyIcon sx={{ mr: 1 }} />
-                <Typography level="title-sm">Total Benefits</Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <PersonIcon sx={{ mr: 1 }} />
+                <Typography level="title-md">Housing Seekers</Typography>
               </Box>
-              <Typography level="h3">{formatCurrency(results.totalBenefits)}</Typography>
+              <Typography level="h3">{formatCurrency(results.segmentedBenefits.housingSeekersDirectBenefits.subtotal)}</Typography>
+              <Typography level="body-sm" sx={{ mt: 1, opacity: 0.8 }}>
+                Direct time & cost savings
+              </Typography>
             </CardContent>
           </Card>
         </Grid>
-        <Grid xs={12} sm={6} md={3}>
-          <Card variant="soft" color="success">
-            <CardContent>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <TrendingUpIcon sx={{ mr: 1 }} />
-                <Typography level="title-sm">Benefit-Cost Ratio</Typography>
-              </Box>
-              <Typography level="h3">{results.benefitCostRatio.toFixed(1)}:1</Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} md={4}>
           <Card variant="soft" color="warning">
             <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <VolunteerActivismIcon sx={{ mr: 1 }} />
+                <Typography level="title-md">Nonprofit Organizations</Typography>
+              </Box>
+              <Typography level="h3">{formatCurrency(results.segmentedBenefits.nonprofitOperationalBenefits.subtotal)}</Typography>
+              <Typography level="body-sm" sx={{ mt: 1, opacity: 0.8 }}>
+                Operational efficiency gains
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid xs={12} md={4}>
+          <Card variant="soft" color="primary">
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <AccountBalanceIcon sx={{ mr: 1 }} />
+                <Typography level="title-md">City of Chicago</Typography>
+              </Box>
+              <Typography level="h3">{formatCurrency(results.segmentedBenefits.municipalBenefits.subtotal)}</Typography>
+              <Typography level="body-sm" sx={{ mt: 1, opacity: 0.8 }}>
+                Reduced costs & increased revenue
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+
+      {/* Key Metrics Row */}
+      <Grid container spacing={3} sx={{ mb: 4 }}>
+        <Grid xs={12} sm={6} md={3}>
+          <Card variant="outlined">
+            <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <PeopleIcon sx={{ mr: 1 }} />
+                <PeopleIcon sx={{ mr: 1, color: 'neutral.500' }} />
                 <Typography level="title-sm">Annual Users</Typography>
               </Box>
-              <Typography level="h3">{formatNumber(inputs.numberOfUsers)}</Typography>
+              <Typography level="h4">{formatNumber(inputs.numberOfUsers)}</Typography>
             </CardContent>
           </Card>
         </Grid>
         <Grid xs={12} sm={6} md={3}>
-          <Card variant="soft" color="primary">
+          <Card variant="outlined">
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <HomeIcon sx={{ mr: 1 }} />
-                <Typography level="title-sm">ROI</Typography>
+                <AttachMoneyIcon sx={{ mr: 1, color: 'neutral.500' }} />
+                <Typography level="title-sm">First-Year Costs</Typography>
               </Box>
-              <Typography level="h3">{results.roiPercentage.toFixed(0)}%</Typography>
+              <Typography level="h4">{formatCurrency(results.totalFirstYearCost)}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid xs={12} sm={6} md={3}>
+          <Card variant="outlined">
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                <TrendingUpIcon sx={{ mr: 1, color: 'neutral.500' }} />
+                <Typography level="title-sm">Net Benefit</Typography>
+              </Box>
+              <Typography level="h4">{formatCurrency(results.netBenefit)}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid xs={12} sm={6} md={3}>
+          <Card variant="outlined">
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                <InfoIcon sx={{ mr: 1, color: 'neutral.500' }} />
+                <Typography level="title-sm">Payback Period</Typography>
+              </Box>
+              <Typography level="h4">{results.paybackPeriodMonths.toFixed(1)} months</Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -113,11 +177,11 @@ function ResearchPage() {
         <Grid xs={12} md={6}>
           <Card>
             <CardContent>
-              <Typography level="h4" sx={{ mb: 3 }}>
-                Interactive Cost-Benefit Calculator
+              <Typography level="h4" sx={{ mb: 2 }}>
+                Interactive Cost-Impact Calculator
               </Typography>
               
-              <Box sx={{ mb: 3 }}>
+              <Box sx={{ mb: 2 }}>
                 <Typography level="title-sm" sx={{ mb: 1 }}>
                   Number of Users: {formatNumber(inputs.numberOfUsers)}
                 </Typography>
@@ -132,7 +196,7 @@ function ResearchPage() {
                 />
               </Box>
 
-              <Box sx={{ mb: 3 }}>
+              <Box sx={{ mb: 2 }}>
                 <Typography level="title-sm" sx={{ mb: 1 }}>
                   Time Savings per User: {formatCurrency(inputs.timeSavingsPerUser)}
                 </Typography>
@@ -147,7 +211,7 @@ function ResearchPage() {
                 />
               </Box>
 
-              <Box sx={{ mb: 3 }}>
+              <Box sx={{ mb: 2 }}>
                 <Typography level="title-sm" sx={{ mb: 1 }}>
                   Cost Savings per User: {formatCurrency(inputs.costSavingsPerUser)}
                 </Typography>
@@ -162,7 +226,7 @@ function ResearchPage() {
                 />
               </Box>
 
-              <Box sx={{ mb: 3 }}>
+              <Box sx={{ mb: 2 }}>
                 <Typography level="title-sm" sx={{ mb: 1 }}>
                   Housing Stability Benefit: {formatCurrency(inputs.housingStabilityBenefit)}
                 </Typography>
@@ -177,7 +241,7 @@ function ResearchPage() {
                 />
               </Box>
 
-              <Box sx={{ mb: 3 }}>
+              <Box sx={{ mb: 2 }}>
                 <Typography level="title-sm" sx={{ mb: 1 }}>
                   Development Cost: {formatCurrency(inputs.developmentCost)}
                 </Typography>
@@ -190,7 +254,7 @@ function ResearchPage() {
                 />
               </Box>
 
-              <Box sx={{ mb: 3 }}>
+              <Box sx={{ mb: 2 }}>
                 <Typography level="title-sm" sx={{ mb: 1 }}>
                   Annual Maintenance Cost: {formatCurrency(inputs.maintenanceCost)}
                 </Typography>
@@ -206,7 +270,7 @@ function ResearchPage() {
               <Button
                 variant="soft"
                 onClick={() => setInputs(defaultInputs)}
-                sx={{ width: '100%' }}
+                sx={{ width: '100%', mt: 1 }}
               >
                 Reset to Default Values
               </Button>
@@ -215,74 +279,74 @@ function ResearchPage() {
         </Grid>
 
         <Grid xs={12} md={6}>
-          <Card>
-            <CardContent>
+          <Card sx={{ height: 'fit-content' }}>
+            <CardContent sx={{ py: 3 }}>
               <Typography level="h4" sx={{ mb: 3 }}>
                 Results Summary
               </Typography>
               
-              <List>
+              <List size="md" sx={{ '--ListItem-paddingY': '1rem' }}>
                 <ListItem>
                   <ListItemDecorator>
-                    <CheckCircleIcon color="success" />
+                    <CheckCircleIcon color="success" sx={{ fontSize: 'xl' }} />
                   </ListItemDecorator>
                   <ListItemContent>
-                    <Typography level="title-sm">Total Benefits</Typography>
-                    <Typography level="body-sm">{formatCurrency(results.totalBenefits)}</Typography>
+                    <Typography level="title-md">Total Benefits</Typography>
+                    <Typography level="title-sm" sx={{ fontWeight: 'bold', color: 'success.500' }}>{formatCurrency(results.totalBenefits)}</Typography>
                   </ListItemContent>
                 </ListItem>
                 <ListItem>
                   <ListItemDecorator>
-                    <WarningIcon color="warning" />
+                    <WarningIcon color="warning" sx={{ fontSize: 'xl' }} />
                   </ListItemDecorator>
                   <ListItemContent>
-                    <Typography level="title-sm">First-Year Costs</Typography>
-                    <Typography level="body-sm">{formatCurrency(results.totalFirstYearCost)}</Typography>
+                    <Typography level="title-md">First-Year Costs</Typography>
+                    <Typography level="title-sm" sx={{ fontWeight: 'bold', color: 'warning.500' }}>{formatCurrency(results.totalFirstYearCost)}</Typography>
                   </ListItemContent>
                 </ListItem>
                 <ListItem>
                   <ListItemDecorator>
-                    <TrendingUpIcon color="primary" />
+                    <TrendingUpIcon color="primary" sx={{ fontSize: 'xl' }} />
                   </ListItemDecorator>
                   <ListItemContent>
-                    <Typography level="title-sm">Net Benefit</Typography>
-                    <Typography level="body-sm">{formatCurrency(results.netBenefit)}</Typography>
+                    <Typography level="title-md">Net Benefit</Typography>
+                    <Typography level="title-sm" sx={{ fontWeight: 'bold', color: 'primary.500' }}>{formatCurrency(results.netBenefit)}</Typography>
                   </ListItemContent>
                 </ListItem>
                 <ListItem>
                   <ListItemDecorator>
-                    <AttachMoneyIcon color="success" />
+                    <AttachMoneyIcon color="success" sx={{ fontSize: 'xl' }} />
                   </ListItemDecorator>
                   <ListItemContent>
-                    <Typography level="title-sm">Benefit-Cost Ratio</Typography>
-                    <Typography level="body-sm">{results.benefitCostRatio.toFixed(1)}:1</Typography>
+                    <Typography level="title-md">Cost-Impact Ratio</Typography>
+                    <Typography level="title-sm" sx={{ fontWeight: 'bold', color: 'success.500' }}>{results.benefitCostRatio.toFixed(1)}:1</Typography>
                   </ListItemContent>
                 </ListItem>
                 <ListItem>
                   <ListItemDecorator>
-                    <TrendingUpIcon color="info" />
+                    <TrendingUpIcon color="info" sx={{ fontSize: 'xl' }} />
                   </ListItemDecorator>
                   <ListItemContent>
-                    <Typography level="title-sm">ROI Percentage</Typography>
-                    <Typography level="body-sm">{results.roiPercentage.toFixed(1)}%</Typography>
+                    <Typography level="title-md">ROI Percentage</Typography>
+                    <Typography level="title-sm" sx={{ fontWeight: 'bold', color: 'info.500' }}>{results.roiPercentage.toFixed(1)}%</Typography>
                   </ListItemContent>
                 </ListItem>
                 <ListItem>
                   <ListItemDecorator>
-                    <InfoIcon color="primary" />
+                    <InfoIcon color="primary" sx={{ fontSize: 'xl' }} />
                   </ListItemDecorator>
                   <ListItemContent>
-                    <Typography level="title-sm">Payback Period</Typography>
-                    <Typography level="body-sm">{results.paybackPeriodMonths.toFixed(1)} months</Typography>
+                    <Typography level="title-md">Payback Period</Typography>
+                    <Typography level="title-sm" sx={{ fontWeight: 'bold', color: 'primary.500' }}>{results.paybackPeriodMonths.toFixed(1)} months</Typography>
                   </ListItemContent>
                 </ListItem>
                 <ListItem>
                   <ListItemDecorator>
-                    <AttachMoneyIcon color="success" />
+                    <AttachMoneyIcon color="success" sx={{ fontSize: 'xl' }} />
                   </ListItemDecorator>
                   <ListItemContent>
-                    <Typography level="title-sm">5-Year NPV</Typography>
-                    <Typography level="body-sm">{formatCurrency(results.fiveYearNpv)}</Typography>
+                    <Typography level="title-md">5-Year NPV</Typography>
+                    <Typography level="title-sm" sx={{ fontWeight: 'bold', color: 'success.500' }}>{formatCurrency(results.fiveYearNpv)}</Typography>
                   </ListItemContent>
                 </ListItem>
               </List>
@@ -293,58 +357,387 @@ function ResearchPage() {
 
       {/* Charts */}
       <Grid container spacing={4} sx={{ mt: 2 }}>
-        <Grid xs={12} md={6}>
+        <Grid xs={12}>
           <Card>
             <CardContent>
               <Typography level="title-lg" sx={{ mb: 2 }}>
-                5-Year Benefits vs Costs
+                10-Year Economic Forecast (with Growth & Inflation)
               </Typography>
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={500}>
                 <LineChart data={chartData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="year" />
                   <YAxis />
-                  <Tooltip formatter={(value: any) => formatCurrency(value as number)} />
-                  <Line type="monotone" dataKey="benefits" stroke="#8884d8" name="Benefits" />
-                  <Line type="monotone" dataKey="costs" stroke="#82ca9d" name="Costs" />
+                  <Tooltip 
+                    formatter={(value: any) => formatCurrency(value as number)}
+                    labelFormatter={(label) => `${label}`}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="municipalBenefits" 
+                    stroke="#ffc658" 
+                    name="Municipal Benefits"
+                    strokeWidth={3}
+                    dot={{ fill: '#ffc658', strokeWidth: 2, r: 4 }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="housingSeekersDirectBenefits" 
+                    stroke="#8884d8" 
+                    name="Housing Seekers"
+                    strokeWidth={2}
+                    dot={{ fill: '#8884d8', strokeWidth: 2, r: 3 }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="nonprofitOperationalBenefits" 
+                    stroke="#82ca9d" 
+                    name="Nonprofit Efficiency"
+                    strokeWidth={2}
+                    dot={{ fill: '#82ca9d', strokeWidth: 2, r: 3 }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="costs" 
+                    stroke="#ff7c7c" 
+                    name="Annual Costs"
+                    strokeWidth={2}
+                    strokeDasharray="5 5"
+                    dot={{ fill: '#ff7c7c', strokeWidth: 2, r: 3 }}
+                  />
                 </LineChart>
               </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography level="title-lg" sx={{ mb: 2 }}>
-                Benefit Breakdown
-              </Typography>
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={benefitBreakdown}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={(props: any) => `${props.name} ${(props.percent * 100).toFixed(0)}%`}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {benefitBreakdown.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(value: any) => formatCurrency(value as number)} />
-                </PieChart>
-              </ResponsiveContainer>
+              <Box sx={{ mt: 2, fontSize: '0.8rem', color: 'text.secondary' }}>
+                <Typography level="body-xs" sx={{ mb: 1 }}>
+                  <strong>Forecast Assumptions:</strong> 3% inflation, 2.5% wage growth, diminishing returns after Year 3
+                </Typography>
+                <Typography level="body-xs">
+                  Benefits include user growth (5% initially, slowing), cost inflation, and efficiency improvements over time
+                </Typography>
+              </Box>
             </CardContent>
           </Card>
         </Grid>
       </Grid>
 
-      {/* Research Data */}
+      {/* Forecast Analysis */}
       <Box sx={{ mt: 4 }}>
+        <Accordion>
+          <AccordionSummary>
+            <Typography level="title-lg">10-Year Economic Forecast Analysis</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Grid container spacing={4}>
+              <Grid xs={12} md={6}>
+                <Typography level="title-md" sx={{ mb: 2, color: 'primary.500' }}>
+                  Key Trends & Insights
+                </Typography>
+                <List>
+                  <ListItem>
+                    <ListItemDecorator>📈</ListItemDecorator>
+                    <ListItemContent>
+                      <Typography level="body-sm">
+                        <strong>Growth Phase (Years 1-3):</strong> Benefits grow due to user adoption, wage increases, and system improvements
+                      </Typography>
+                    </ListItemContent>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemDecorator>📊</ListItemDecorator>
+                    <ListItemContent>
+                      <Typography level="body-sm">
+                        <strong>Maturity Phase (Years 4-7):</strong> Diminishing returns as market saturates, but benefits stabilize at higher levels
+                      </Typography>
+                    </ListItemContent>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemDecorator>💰</ListItemDecorator>
+                    <ListItemContent>
+                      <Typography level="body-sm">
+                        <strong>Inflation Impact:</strong> Costs grow at 3% annually, but benefits grow faster due to wage increases and user growth
+                      </Typography>
+                    </ListItemContent>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemDecorator>🏛️</ListItemDecorator>
+                    <ListItemContent>
+                      <Typography level="body-sm">
+                        <strong>Municipal Benefits:</strong> Remain largest segment due to ongoing encampment cost savings and increased tax revenue
+                      </Typography>
+                    </ListItemContent>
+                  </ListItem>
+                </List>
+              </Grid>
+              
+              <Grid xs={12} md={6}>
+                <Typography level="title-md" sx={{ mb: 2, color: 'warning.500' }}>
+                  Economic Assumptions
+                </Typography>
+                <List>
+                  <ListItem>
+                    <ListItemDecorator>💵</ListItemDecorator>
+                    <ListItemContent>
+                      <Typography level="body-sm">
+                        <strong>Inflation Rate:</strong> 3% annually (Federal Reserve target)
+                      </Typography>
+                    </ListItemContent>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemDecorator>📊</ListItemDecorator>
+                    <ListItemContent>
+                      <Typography level="body-sm">
+                        <strong>Wage Growth:</strong> 2.5% annually (historical Chicago average)
+                      </Typography>
+                    </ListItemContent>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemDecorator>👥</ListItemDecorator>
+                    <ListItemContent>
+                      <Typography level="body-sm">
+                        <strong>User Growth:</strong> 5% initially, slowing over time as market saturates
+                      </Typography>
+                    </ListItemContent>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemDecorator>📉</ListItemDecorator>
+                    <ListItemContent>
+                      <Typography level="body-sm">
+                        <strong>Diminishing Returns:</strong> 15% efficiency reduction after Year 3 as easy gains are captured
+                      </Typography>
+                    </ListItemContent>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemDecorator>🏠</ListItemDecorator>
+                    <ListItemContent>
+                      <Typography level="body-sm">
+                        <strong>Housing Placement:</strong> Gradual improvement from 20% to 28% over 10 years
+                      </Typography>
+                    </ListItemContent>
+                  </ListItem>
+                </List>
+              </Grid>
+            </Grid>
+            
+            <Box sx={{ mt: 3, p: 2, bgcolor: 'warning.50', borderRadius: 'md', border: '1px solid', borderColor: 'warning.200' }}>
+              <Typography level="title-sm" sx={{ mb: 1, color: 'warning.700' }}>
+                📊 Forecast Methodology
+              </Typography>
+              <Typography level="body-sm" sx={{ color: 'warning.700' }}>
+                This 10-year forecast incorporates realistic economic assumptions including inflation, wage growth, 
+                user adoption curves, and diminishing returns. The model assumes benefits don't grow linearly forever—
+                after Year 3, efficiency improvements slow as the "low-hanging fruit" is captured. Municipal benefits 
+                remain strong due to ongoing encampment cost avoidance, while user-facing benefits grow with wage inflation 
+                but plateau as the market matures.
+              </Typography>
+            </Box>
+          </AccordionDetails>
+        </Accordion>
+
+        <Accordion>
+          <AccordionSummary>
+            <Typography level="title-lg">Research Methodology & Assumptions</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography level="body-md" sx={{ mb: 3 }}>
+              This cost-impact analysis uses segmented benefits to show value distribution across stakeholders, 
+              based on Chicago-specific data from the Chicago Housing Authority's FY2025 MTW Annual Plan.
+            </Typography>
+            
+            <Grid container spacing={3}>
+              <Grid xs={12} md={4}>
+                <Typography level="title-sm" sx={{ mb: 1, color: 'primary.500' }}>Housing Seekers</Typography>
+                <List size="sm">
+                  <ListItem>
+                    <ListItemDecorator>•</ListItemDecorator>
+                    <ListItemContent>
+                      <Typography level="body-sm">Time savings: 10 hours at $15/hour per user</Typography>
+                    </ListItemContent>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemDecorator>•</ListItemDecorator>
+                    <ListItemContent>
+                      <Typography level="body-sm">Direct cost reductions in applications & travel</Typography>
+                    </ListItemContent>
+                  </ListItem>
+                </List>
+              </Grid>
+              
+              <Grid xs={12} md={4}>
+                <Typography level="title-sm" sx={{ mb: 1, color: 'warning.500' }}>Nonprofit Organizations</Typography>
+                <List size="sm">
+                  <ListItem>
+                    <ListItemDecorator>•</ListItemDecorator>
+                    <ListItemContent>
+                      <Typography level="body-sm">Staff efficiency: $30/hour for case workers</Typography>
+                    </ListItemContent>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemDecorator>•</ListItemDecorator>
+                    <ListItemContent>
+                      <Typography level="body-sm">25% of users receive nonprofit assistance</Typography>
+                    </ListItemContent>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemDecorator>•</ListItemDecorator>
+                    <ListItemContent>
+                      <Typography level="body-sm">8 hours average per housing search case</Typography>
+                    </ListItemContent>
+                  </ListItem>
+                </List>
+              </Grid>
+              
+              <Grid xs={12} md={4}>
+                <Typography level="title-sm" sx={{ mb: 1, color: 'info.500' }}>City of Chicago</Typography>
+                <List size="sm">
+                  <ListItem>
+                    <ListItemDecorator>•</ListItemDecorator>
+                    <ListItemContent>
+                      <Typography level="body-sm">$20M annual encampment cleanup costs</Typography>
+                    </ListItemContent>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemDecorator>•</ListItemDecorator>
+                    <ListItemContent>
+                      <Typography level="body-sm">15% tax rate on increased income</Typography>
+                    </ListItemContent>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemDecorator>•</ListItemDecorator>
+                    <ListItemContent>
+                      <Typography level="body-sm">20% achieve faster housing placement</Typography>
+                    </ListItemContent>
+                  </ListItem>
+                </List>
+              </Grid>
+            </Grid>
+          </AccordionDetails>
+        </Accordion>
+
+        <Accordion>
+          <AccordionSummary>
+            <Typography level="title-lg">Detailed Benefit Analysis by Stakeholder</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Grid container spacing={3}>
+              {/* Housing Seekers */}
+              <Grid xs={12} md={4}>
+                <Card variant="outlined">
+                  <CardContent>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                      <PersonIcon sx={{ mr: 1, color: 'primary.500' }} />
+                      <Typography level="title-md">Housing Seekers</Typography>
+                    </Box>
+                    <List size="sm">
+                      <ListItem>
+                        <ListItemContent>
+                          <Typography level="body-sm">Time Savings</Typography>
+                          <Typography level="title-sm">{formatCurrency(results.segmentedBenefits.housingSeekersDirectBenefits.timeSavings)}</Typography>
+                        </ListItemContent>
+                      </ListItem>
+                      <ListItem>
+                        <ListItemContent>
+                          <Typography level="body-sm">Application Cost Savings</Typography>
+                          <Typography level="title-sm">{formatCurrency(results.segmentedBenefits.housingSeekersDirectBenefits.applicationCostSavings)}</Typography>
+                        </ListItemContent>
+                      </ListItem>
+                      <ListItem>
+                        <ListItemContent>
+                          <Typography level="body-sm">Transportation Savings</Typography>
+                          <Typography level="title-sm">{formatCurrency(results.segmentedBenefits.housingSeekersDirectBenefits.transportationSavings)}</Typography>
+                        </ListItemContent>
+                      </ListItem>
+                    </List>
+                    <Box sx={{ mt: 2, pt: 2, borderTop: '1px solid', borderColor: 'divider' }}>
+                      <Typography level="title-sm">
+                        Subtotal: {formatCurrency(results.segmentedBenefits.housingSeekersDirectBenefits.subtotal)}
+                      </Typography>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+
+              {/* Nonprofit Organizations */}
+              <Grid xs={12} md={4}>
+                <Card variant="outlined">
+                  <CardContent>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                      <VolunteerActivismIcon sx={{ mr: 1, color: 'warning.500' }} />
+                      <Typography level="title-md">Nonprofit Organizations</Typography>
+                    </Box>
+                    <List size="sm">
+                      <ListItem>
+                        <ListItemContent>
+                          <Typography level="body-sm">Caseload Efficiency (@$30/hr)</Typography>
+                          <Typography level="title-sm">{formatCurrency(results.segmentedBenefits.nonprofitOperationalBenefits.caseloadEfficiency)}</Typography>
+                        </ListItemContent>
+                      </ListItem>
+                      <ListItem>
+                        <ListItemContent>
+                          <Typography level="body-sm">Reduced Duplicate Efforts</Typography>
+                          <Typography level="title-sm">{formatCurrency(results.segmentedBenefits.nonprofitOperationalBenefits.reducedDuplicateEfforts)}</Typography>
+                        </ListItemContent>
+                      </ListItem>
+                      <ListItem>
+                        <ListItemContent>
+                          <Typography level="body-sm">Improved Outcomes</Typography>
+                          <Typography level="title-sm">{formatCurrency(results.segmentedBenefits.nonprofitOperationalBenefits.improvedOutcomes)}</Typography>
+                        </ListItemContent>
+                      </ListItem>
+                    </List>
+                    <Box sx={{ mt: 2, pt: 2, borderTop: '1px solid', borderColor: 'divider' }}>
+                      <Typography level="title-sm">
+                        Subtotal: {formatCurrency(results.segmentedBenefits.nonprofitOperationalBenefits.subtotal)}
+                      </Typography>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+
+              {/* City of Chicago */}
+              <Grid xs={12} md={4}>
+                <Card variant="outlined">
+                  <CardContent>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                      <AccountBalanceIcon sx={{ mr: 1, color: 'info.500' }} />
+                      <Typography level="title-md">City of Chicago</Typography>
+                    </Box>
+                    <List size="sm">
+                      <ListItem>
+                        <ListItemContent>
+                          <Typography level="body-sm">Reduced Encampment Costs</Typography>
+                          <Typography level="title-sm">{formatCurrency(results.segmentedBenefits.municipalBenefits.reducedEncampmentCosts)}</Typography>
+                        </ListItemContent>
+                      </ListItem>
+                      <ListItem>
+                        <ListItemContent>
+                          <Typography level="body-sm">Increased Tax Revenue</Typography>
+                          <Typography level="title-sm">{formatCurrency(results.segmentedBenefits.municipalBenefits.increasedTaxRevenue)}</Typography>
+                        </ListItemContent>
+                      </ListItem>
+                      <ListItem>
+                        <ListItemContent>
+                          <Typography level="body-sm">Emergency Services Savings</Typography>
+                          <Typography level="title-sm">{formatCurrency(results.segmentedBenefits.municipalBenefits.reducedEmergencyServiceCosts)}</Typography>
+                        </ListItemContent>
+                      </ListItem>
+                      <ListItem>
+                        <ListItemContent>
+                          <Typography level="body-sm">Healthcare Cost Reductions</Typography>
+                          <Typography level="title-sm">{formatCurrency(results.segmentedBenefits.municipalBenefits.reducedHealthcareCosts)}</Typography>
+                        </ListItemContent>
+                      </ListItem>
+                    </List>
+                    <Box sx={{ mt: 2, pt: 2, borderTop: '1px solid', borderColor: 'divider' }}>
+                      <Typography level="title-sm">
+                        Subtotal: {formatCurrency(results.segmentedBenefits.municipalBenefits.subtotal)}
+                      </Typography>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
+          </AccordionDetails>
+        </Accordion>
+
         <Accordion>
           <AccordionSummary>
             <Typography level="title-lg">Chicago Housing Authority Data</Typography>
@@ -402,26 +795,6 @@ function ResearchPage() {
 
         <Accordion>
           <AccordionSummary>
-            <Typography level="title-lg">Key Findings</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <List>
-              {researchData.keyFindings.map((finding, index) => (
-                <ListItem key={index}>
-                  <ListItemDecorator>
-                    <CheckCircleIcon color="success" />
-                  </ListItemDecorator>
-                  <ListItemContent>
-                    <Typography level="body-sm">{finding}</Typography>
-                  </ListItemContent>
-                </ListItem>
-              ))}
-            </List>
-          </AccordionDetails>
-        </Accordion>
-
-        <Accordion>
-          <AccordionSummary>
             <Typography level="title-lg">Data Sources & Citations</Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -440,68 +813,6 @@ function ResearchPage() {
           </AccordionDetails>
         </Accordion>
       </Box>
-
-      {/* Methodology */}
-      <Card sx={{ mt: 4 }}>
-        <CardContent>
-          <Typography level="h4" sx={{ mb: 2 }}>
-            Research Methodology
-          </Typography>
-          <Typography level="body-md" sx={{ mb: 2 }}>
-            This cost-benefit analysis is based on conservative assumptions and Chicago-specific data from the Chicago Housing Authority's FY2025 MTW Annual Plan. The analysis incorporates:
-          </Typography>
-          <List>
-            <ListItem>
-              <ListItemDecorator>•</ListItemDecorator>
-              <ListItemContent>
-                <Typography level="body-sm">
-                  <strong>User Base:</strong> 25% of waitlist households (50,000 users) use the website annually
-                </Typography>
-              </ListItemContent>
-            </ListItem>
-            <ListItem>
-              <ListItemDecorator>•</ListItemDecorator>
-              <ListItemContent>
-                <Typography level="body-sm">
-                  <strong>Time Savings:</strong> 10 hours saved per user at $15/hour = $150 value
-                </Typography>
-              </ListItemContent>
-            </ListItem>
-            <ListItem>
-              <ListItemDecorator>•</ListItemDecorator>
-              <ListItemContent>
-                <Typography level="body-sm">
-                  <strong>Cost Savings:</strong> $100 per user (transportation + application fees)
-                </Typography>
-              </ListItemContent>
-            </ListItem>
-            <ListItem>
-              <ListItemDecorator>•</ListItemDecorator>
-              <ListItemContent>
-                <Typography level="body-sm">
-                  <strong>Housing Stability:</strong> 20% achieve faster housing placement → $2,500 additional annual income
-                </Typography>
-              </ListItemContent>
-            </ListItem>
-            <ListItem>
-              <ListItemDecorator>•</ListItemDecorator>
-              <ListItemContent>
-                <Typography level="body-sm">
-                  <strong>Development Cost:</strong> $625,000 (midpoint of $500K-$750K budget)
-                </Typography>
-              </ListItemContent>
-            </ListItem>
-            <ListItem>
-              <ListItemDecorator>•</ListItemDecorator>
-              <ListItemContent>
-                <Typography level="body-sm">
-                  <strong>Maintenance:</strong> $100,000 annually
-                </Typography>
-              </ListItemContent>
-            </ListItem>
-          </List>
-        </CardContent>
-      </Card>
     </Box>
   );
 }

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Quick Analysis Runner for AFairHome.org Cost-Benefit Study
+Quick Analysis Runner for AFairHome.org Cost-Impact Study
 
-This script runs the cost-benefit analysis and displays results
+This script runs the Cost-Impact analysis and displays results
 for immediate review and validation.
 """
 
@@ -12,9 +12,9 @@ import os
 from cost_benefit_model import CostBenefitModel, ModelInputs, print_summary_report
 
 def main():
-    """Run the AFairHome cost-benefit analysis."""
+    """Run the AFairHome Cost-Impact analysis."""
     
-    print("🏠 AFAIRHOME.ORG COST-BENEFIT ANALYSIS")
+    print("🏠 AFAIRHOME.ORG Cost-Impact ANALYSIS")
     print("=" * 60)
     print("Loading Chicago Housing Authority data and running analysis...")
     print()
