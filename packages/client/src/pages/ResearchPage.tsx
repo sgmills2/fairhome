@@ -14,7 +14,7 @@ import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import Accordion from '@mui/joy/Accordion';
 import AccordionSummary from '@mui/joy/AccordionSummary';
 import AccordionDetails from '@mui/joy/AccordionDetails';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import PeopleIcon from '@mui/icons-material/People';
@@ -32,8 +32,7 @@ import {
   calculateCostBenefit, 
   formatCurrency, 
   formatNumber,
-  generateChartData,
-  generateBenefitBreakdown
+  generateChartData
 } from '../services/research';
 
 function ResearchPage() {
@@ -48,7 +47,6 @@ function ResearchPage() {
   };
 
   const chartData = useMemo(() => generateChartData(inputs, results), [inputs, results]);
-  const benefitBreakdown = useMemo(() => generateBenefitBreakdown(results), [results]);
 
   return (
     <Box sx={{ p: 3, maxWidth: '1200px', mx: 'auto' }}>
